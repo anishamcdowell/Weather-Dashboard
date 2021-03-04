@@ -1,0 +1,29 @@
+:root {
+
+}
+
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+}
+
+.container {
+    border: 1px solid gray;
+    margin: 5px;
+    padding: 10px;
+}
+
+ul.ul {
+    list-style: none;
+}
+
+.card-container {
+    display: flex;
+}
+
+.card {
+    background-color: blue;
+    margin: 15px;
+    color: white;
+    padding: 10px;
+}

@@ -5,71 +5,76 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <main class="container" id="city-display">
-        <h1 id="city-and-date">
-        
-        </h1>
-        <ul class="ul" "main-stats">
-            <li id="temp">Temperature:</li>
-            <li id="humidity">Humidity:</li>
-            <li id="wind-speed">Wind Speed:</li>
-            <li id="uv-index">UV Index:</li>
-        </ul>
+    <main id="main"> 
+        <section class="container" id="city-display">
+            <h1 id="city-and-date">
+                Placeholder
+            </h1>
+            <ul class="ul" "main-stats">
+                <li id="temp">Temperature:</li>
+                <li id="humidity">Humidity:</li>
+                <li id="wind-speed">Wind Speed:</li>
+                <li id="uv-index">UV Index:</li>
+            </ul>
+        </section>
+        <section class="container" id="five-day-forecast">
+            <h2>5-Day Forecast</h2>
+            <div class="card-container">
+                <div class="card" id="day-1">
+                    <p class="date" id="day-1-date"></p>
+                    <ul class="ul" id="day-1-stats">
+                        <li class="li" id="day-1-img"></li>
+                        <li class="li" id="day-1-temp">Temp:</li>
+                        <li class="li" id="day-1-humidity">Humidity:</li>
+                    </ul>
+                </div>
+                <div class="card" id="day-2">
+                    <p class="date" id="day-2-date"></p>
+                    <ul class="ul" id="day-1-stats">
+                        <li class="li" id="day-2-img"></li>
+                        <li class="li" id="day-2-temp">Temp:</li>
+                        <li class="li" id="day-2-humidity">Humidity:</li>
+                    </ul>
+                </div>
+                <div class="card" id="day-3">
+                    <p class="date" id="day-3-date"></p>
+                    <ul class="ul" id="day-3-stats">
+                        <li class="li" id="day-3-img"></li>
+                        <li class="li" id="day-3-temp">Temp:</li>
+                        <li class="li" id="day-3-humidity">Humidity:</li>
+                    </ul>
+                </div>
+                <div class="card" id="day-4">
+                    <p class="date" id="day-4-date"></p>
+                    <ul class="ul" id="day-4-stats">
+                        <li class="li" id="day-4-img"></li>
+                        <li class="li" id="day-4-temp">Temp:</li>
+                        <li class="li" id="day-4-humidity">Humidity:</li>
+                    </ul>
+                </div>
+                <div class="card" id="day-5">
+                    <p class="date" id="day-5-date"></p>
+                    <ul class="ul" id="day-5-stats">
+                        <li class="li" id="day-5-img"></li>
+                        <li class="li" id="day-5-temp">Temp:</li>
+                        <li class="li" id="day-5-humidity">Humidity:</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </main>
-    <section class="container" id="five-day-forecast">
-        <h2>5-Day Forecast</h2>
-        <div class="card-container">
-            <div class="card" id="day-1">
-                <p class="date" id="day-1-date"></p>
-                <ul class="ul" id="day-1-stats">
-                    <li class="li" id="day-1-img"></li>
-                    <li class="li" id="day-1-temp">Temp:</li>
-                    <li class="li" id="day-1-humidity">Humidity:</li>
-                </ul>
-            </div>
-            <div class="card" id="day-2">
-                <p class="date" id="day-2-date"></p>
-                <ul class="ul" id="day-1-stats">
-                    <li class="li" id="day-2-img"></li>
-                    <li class="li" id="day-2-temp">Temp:</li>
-                    <li class="li" id="day-2-humidity">Humidity:</li>
-                </ul>
-            </div>
-            <div class="card" id="day-3">
-                <p class="date" id="day-3-date"></p>
-                <ul class="ul" id="day-3-stats">
-                    <li class="li" id="day-3-img"></li>
-                    <li class="li" id="day-3-temp">Temp:</li>
-                    <li class="li" id="day-3-humidity">Humidity:</li>
-                </ul>
-            </div>
-            <div class="card" id="day-4">
-                <p class="date" id="day-4-date"></p>
-                <ul class="ul" id="day-4-stats">
-                    <li class="li" id="day-4-img"></li>
-                    <li class="li" id="day-4-temp">Temp:</li>
-                    <li class="li" id="day-4-humidity">Humidity:</li>
-                </ul>
-            </div>
-            <div class="card" id="day-5">
-                <p class="date" id="day-5-date"></p>
-                <ul class="ul" id="day-5-stats">
-                    <li class="li" id="day-5-img"></li>
-                    <li class="li" id="day-5-temp">Temp:</li>
-                    <li class="li" id="day-5-humidity">Humidity:</li>
-                </ul>
-            </div>
-        </div>
-    </section>
     <aside class="container" id="search-and-hx">
-        <div class="container" id="search">
+        <div id="search">
             <h3>Search for a city:</h3>
         </div>
         <div class="container" id="search-hx">
 
         </div>
     </aside>
+
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
