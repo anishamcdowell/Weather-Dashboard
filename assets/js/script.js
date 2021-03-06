@@ -1,7 +1,5 @@
-console.log("JS is working!");
-
 // API ELEMENTS
-var api = "http://api.openweathermap.org/data/2.5/"
+var apiUrl = "http://api.openweathermap.org/data/2.5/weather";
 var myKey = "a590260e0a66edf311e2ebae9ded9db5";
 
 //HTML ELEMENTS
@@ -9,12 +7,21 @@ var searchBoxEl = $("#search-box");
 var searchButtonEl = $("#search-btn");
 var searchedCity;
 var searchHxEl = $("#search-hx");
-var key = 0;
+var cityNameEl = $("#city-name");
+var currentDate = moment().format("dddd, MMM Do, YYYY");
+var tempEl = $("#temp");
+var humidityEl = $("#humidity");
+var windSpeedEl = $("#winde-speed");
+var uvIndexEl = $("#uv-index");
 
 //STORAGE DATA
+var key = localStorage.length;
 for (var i = 0; i < localStorage.length; i++) { 
     searchHxEl.append(`<p>${localStorage.getItem(localStorage.key(i))}`)
 };
+
+//INITIAL LOAD BEHAVIOR
+$("#date").append(currentDate);
 
 //When the user types in a city and hits the search button
 searchButtonEl.click(function(e) {
@@ -24,21 +31,27 @@ searchButtonEl.click(function(e) {
     localStorage.setItem(key++, searchedCity);
     searchHxEl.append(`<p>${searchedCity}`);
 
-    // //Name of the city they are searching is appended to API url parameters
-    // var cityUrl = ""
-    // //My API key is appended to new url parameters
-    // var fullUrl = ""
-    // //API is fetched with all new parameters
-    // fetch(fullUrl)
-    //     .then (function(response) {
-    //         return response.json();
-    //     })
-    //     .then (function(data){
-    //         console.log(data);
-    //     })
+    //Name of the city user searched is appended to API url parameters with my API key
+    searchUrl = apiUrl + "?q=" + searchedCity +"&appid=" + myKey;
+    //API is fetched with city name appended to URL
+    fetch(searchUrl)
+        .then (function(response) {
+            return response.json();
+        })
+        .then (function(data){
+            console.log(data);
+            todaysData();
+            // fiveDayData();
+        })
 
-    // //Main city data appears in HTML document
-
-    // //5 Day Forecast appears in HTML document
+    //Main city data appears in HTML document
+    function todaysData() {
+        cityNameEl.append(`<p>${searchedCity}`);
+        tempEl
+        humidityEl.
+        windSpeedEl
+        uvIndexEl
+    };
+    //5 Day Forecast appears in HTML document
 });
 
