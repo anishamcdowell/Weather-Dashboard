@@ -9,17 +9,19 @@ var searchBoxEl = $("#search-box");
 var searchButtonEl = $("#search-btn");
 var searchedCity;
 var searchHxEl = $("#search-hx");
-
+var key = 0;
 
 //STORAGE DATA
-localStorage.getItem(searchedCity);
+for (var i = 0; i < localStorage.length; i++) { 
+    searchHxEl.append(`<p>${localStorage.getItem(localStorage.key(i))}`)
+};
 
 //When the user types in a city and hits the search button
 searchButtonEl.click(function(e) {
     e.preventDefault();
     searchedCity = searchBoxEl.val();
     console.log(searchedCity);
-    localStorage.setItem(searchedCity, searchedCity);
+    localStorage.setItem(key++, searchedCity);
     searchHxEl.append(`<p>${searchedCity}`);
 
     // //Name of the city they are searching is appended to API url parameters
