@@ -20,7 +20,6 @@ var currentLat;
 var key = localStorage.length;
 
 //STORAGE DATA
-
 for (var i = 0; i < localStorage.length; i++) { 
     searchHxEl.append(`<p>${localStorage.getItem(localStorage.key(i))}`)
 };
@@ -30,24 +29,26 @@ $("#date").append(currentDate);
 
 //When the user types in a city and hits the search button
 searchButtonEl.click(function(e) {
+    //Prevent form submit refresh
     e.preventDefault();
-    
+
+    //Clear last search's stats
     cityNameEl.empty();
     tempEl.empty();
     humidityEl.empty();
     windSpeedEl.empty();
     uvIndexEl.empty();
 
-    //Their input becomes stored in local storage and...
+    //User input becomes stored in local storage and...
     searchedCity = searchBoxEl.val();
     localStorage.setItem(key++, searchedCity);
     //...added to the search hx display
     searchHxEl.append(`<p>${searchedCity}`);
 
-    //Name of the city user searched is appended to API url parameters with my API key
-    var searchUrl = apiUrl + "?q=" + searchedCity +"&appid=" + myKey;
+    //Name of the city user searched is appended to API url with my API key
+    var searchUrl = apiUrl + "?q=" + searchedCity + "&units=imperial" + "&appid=" + myKey;
 
-    //API is fetched with city name appended to URL
+    //Correct url with user input is fetched
     fetch(searchUrl)
         .then (function(response) {
             return response.json();
@@ -55,11 +56,11 @@ searchButtonEl.click(function(e) {
         .then (function(data){
             console.log(data);
             cityNameEl.append(`<p>${searchedCity}`);
-            tempEl.append("Temperature: " + `${data.main.temp}`);
-            humidityEl.append("Humidity: " + `${data.main.humidity}`);
-            windSpeedEl.append("Wind Speed: " + `${data.wind.speed}`);
+            tempEl.append("Temperature: " + data.main.temp + "&deg;F");
+            humidityEl.append("Humidity: " + data.main.humidity + "%");
+            windSpeedEl.append("Wind Speed: " + data.wind.speed + "mph");
 
-            //Getting lon/lat for UV API
+            //Getting current search's lon/lat for UV API
             currentLon = data.coord.lon;
             currentLat = data.coord.lat;
 
@@ -72,7 +73,7 @@ searchButtonEl.click(function(e) {
                 return response.json()
              }).then (function(data) {
                  console.log(data);
-                 uvIndexEl.append("UV Index: " + `${data.value}`);
+                 uvIndexEl.append("UV Index: " + data.value);
                  
                  //Color code UV index as favorable, moderate, or severe
                 if (data.value > 10) {
@@ -88,7 +89,7 @@ searchButtonEl.click(function(e) {
              }) 
 
              //Url for 5 Day Forecast API
-             var fiveDayUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&appid=" + myKey;
+             var fiveDayUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&units=imperial&appid=" + myKey;
 
              //Fetch 5 Day Forecast
              fetch(fiveDayUrl)
@@ -97,6 +98,18 @@ searchButtonEl.click(function(e) {
                 })
                 .then (function(data) {
                     console.log(data);
+                    //Console log the next 5 days of the forecast
+                    for (var i = 3; i < data.list.length; i+=8) {
+                        nextDay = moment(data.list[i].dt_txt).format("dddd, MMM Do, YYYY");
+                        nextTemp = (data.list[i].main.temp);
+                        nextHumidity = (data.list[i].main.humidity);
+                    }
+                    
+
+                    //Assign temps, humidity, and icons to correct day in 5 day forecast
+                    for (var i = 0; i < $(".forecast-temp"); i++) {
+                        
+                    }
                 });
 
                 // cityNameEl.append(`<p>${searchedCity}`);
