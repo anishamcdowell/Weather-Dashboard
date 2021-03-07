@@ -11,8 +11,10 @@ var cityNameEl = $("#city-name");
 var currentDate = moment().format("dddd, MMM Do, YYYY");
 var tempEl = $("#temp");
 var humidityEl = $("#humidity");
-var windSpeedEl = $("#winde-speed");
+var windSpeedEl = $("#wind-speed");
 var uvIndexEl = $("#uv-index");
+var currentLon;
+var currentLat;
 
 //STORAGE DATA
 var key = localStorage.length;
@@ -32,7 +34,8 @@ searchButtonEl.click(function(e) {
     searchHxEl.append(`<p>${searchedCity}`);
 
     //Name of the city user searched is appended to API url parameters with my API key
-    searchUrl = apiUrl + "?q=" + searchedCity +"&appid=" + myKey;
+    var searchUrl = apiUrl + "?q=" + searchedCity +"&appid=" + myKey;
+
     //API is fetched with city name appended to URL
     fetch(searchUrl)
         .then (function(response) {
@@ -40,18 +43,38 @@ searchButtonEl.click(function(e) {
         })
         .then (function(data){
             console.log(data);
-            todaysData();
-            // fiveDayData();
-        })
+            cityNameEl.append(`<p>${searchedCity}`);
+            tempEl.append(`${data.main.temp}`);
+            humidityEl.append(`${data.main.humidity}`);
+            windSpeedEl.append(`${data.wind.speed}`);
 
-    //Main city data appears in HTML document
-    function todaysData() {
-        cityNameEl.append(`<p>${searchedCity}`);
-        tempEl
-        humidityEl.
-        windSpeedEl
-        uvIndexEl
-    };
-    //5 Day Forecast appears in HTML document
+            //Getting lon/lat for UV API
+            currentLon = data.coord.lon;
+            currentLat = data.coord.lat;
+            console.log(currentLon);
+            console.log(currentLat);
+        })
+        
 });
+
+// API Url for UV
+// var apiUvUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" +{lat} +" &lon=" + {lon} + "&appid= + myKey"
+
+// fetch(apiUvUrl)
+//     .then (function(response) {
+//         return response.json()
+//     }).then (function(data) {
+//         console.log(data)
+//     });
+            
+//         // uvIndexEl
+//             // fiveDayData();
+//         // });
+
+//     //Main city data appears in HTML document
+//     function todaysData(data) {
+        
+//     };
+//     //5 Day Forecast appears in HTML document
+// });
 
