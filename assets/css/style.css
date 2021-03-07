@@ -7,6 +7,18 @@ body {
     display: flex;
 }
 
+h1 {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: 18px;
+    padding: 0;
+    line-height: 0;
+}
+
 .container {
     border: 1px solid gray;
     margin: 5px;
