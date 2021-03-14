@@ -6,6 +6,7 @@ var myKey = "a590260e0a66edf311e2ebae9ded9db5";
 var searchBoxEl = $("#search-box");
 var searchButtonEl = $("#search-btn");
 var searchHxEl = $("#search-hx");
+var cityDisplayEl = $("#city-name-and-icon");
 var cityNameEl = $("#city-name");
 var currentDate = moment().format("dddd, MMM Do, YYYY");
 var tempEl = $("#temp");
@@ -67,11 +68,20 @@ function dailyForecast() {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
+      console.log("first fetch return", data);
+      
+      var iconCode = data.weather[0].icon;
+      var img = $("<img>");
+      img.attr("src", "https://openweathermap.org/img/wn/" + iconCode + "@2x.png");
+      cityDisplayEl.append(img);
+
+
       cityNameEl.append(`<p>${searchedCity}`);
       tempEl.append("Temperature: " + data.main.temp + "&deg;F");
       humidityEl.append("Humidity: " + data.main.humidity + "%");
       windSpeedEl.append("Wind Speed: " + data.wind.speed + "mph");
+
+      
 
       //Getting current search's lon/lat for UV API
       currentLon = data.coord.lon;
@@ -103,36 +113,37 @@ function dailyForecast() {
         });
     });
 
-    //Url for 5 Day Forecast API
-    var fiveDayUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&units=imperial&appid=" + myKey;
+  //Url for 5 Day Forecast API
+  var fiveDayUrl =
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+    searchedCity +
+    "&units=imperial&appid=" +
+    myKey;
 
-    //Fetch 5 Day Forecast
-    fetch(fiveDayUrl)
-       .then (function (response) {
-           return response.json();
-       })
-       .then (function(data) {
-           console.log(data);
-           //Console log the next 5 days of the forecast
-           for (var i = 3; i < data.list.length; i+=8) {
-               nextDay = moment(data.list[i].dt_txt).format("dddd, MMM Do, YYYY");
-               nextTemp = (data.list[i].main.temp);
-               nextHumidity = (data.list[i].main.humidity);
-           }
-           
+  //Fetch 5 Day Forecast
+  fetch(fiveDayUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      //Console log the next 5 days of the forecast
+      for (var i = 3; i < data.list.length; i += 8) {
+        nextDay = moment(data.list[i].dt_txt).format("dddd, MMM Do, YYYY");
+        nextTemp = data.list[i].main.temp;
+        nextHumidity = data.list[i].main.humidity;
+      }
 
-           //Assign temps, humidity, and icons to correct day in 5 day forecast
-           for (var i = 0; i < $(".forecast-temp"); i++) {
-               
-           }
-       });
+      //Assign temps, humidity, and icons to correct day in 5 day forecast
+      for (var i = 0; i < $(".forecast-temp"); i++) {}
+    });
 
-       // cityNameEl.append(`<p>${searchedCity}`);
-       // tempEl.append("Temperature: " + `${data.main.temp}`);
-       // humidityEl.append("Humidity: " + `${data.main.humidity}`);
-       // windSpeedEl.append("Wind Speed: " + `${data.wind.speed}`);
-       
-       // data.list.0.dt_text
-       // data.list.main.temp
-       // data.data.list.main.humidity
+  // cityNameEl.append(`<p>${searchedCity}`);
+  // tempEl.append("Temperature: " + `${data.main.temp}`);
+  // humidityEl.append("Humidity: " + `${data.main.humidity}`);
+  // windSpeedEl.append("Wind Speed: " + `${data.wind.speed}`);
+
+  // data.list.0.dt_text
+  // data.list.main.temp
+  // data.data.list.main.humidity
 }
