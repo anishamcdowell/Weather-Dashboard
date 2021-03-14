@@ -1,5 +1,5 @@
 // API ELEMENTS
-var apiUrl = "http://api.openweathermap.org/data/2.5/weather";
+var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var myKey = "a590260e0a66edf311e2ebae9ded9db5";
 
 //HTML ELEMENTS
