@@ -5,14 +5,14 @@ var myKey = "a590260e0a66edf311e2ebae9ded9db5";
 //HTML ELEMENTS
 var searchBoxEl = $("#search-box");
 var searchButtonEl = $("#search-btn");
-var searchHxEl = $("#search-hx");
-var cityDisplayEl = $("#city-name-and-icon");
+var searchHxUl = $("#hx-list");
 var cityNameEl = $("#city-name");
 var currentDate = moment().format("dddd, MMM Do, YYYY");
 var tempEl = $("#temp");
 var humidityEl = $("#humidity");
 var windSpeedEl = $("#wind-speed");
 var uvIndexEl = $("#uv-index");
+var iconContainer = $("#city-name-and-icon");
 
 //USER DEPENDENT VARIABLES
 var searchedCity;
@@ -22,16 +22,13 @@ var key = localStorage.length;
 
 //STORAGE DATA
 var lastSearch = localStorage.key(i);
-
 for (var i = 0; i < localStorage.length; i++) {
-  searchHxEl.append(`<p>${localStorage.getItem(localStorage.key(i))}`);
+  searchHxUl.append(`<p>${localStorage.getItem(localStorage.key(i))}`);
 }
 
+$();
 //INITIAL LOAD BEHAVIOR
 $("#date").append(currentDate);
-if ((window.location.reload = true)) {
-  cityNameEl.append(`<p>${localStorage.getItem(lastSearch)}`);
-}
 
 //When the user types in a city and hits the search button
 searchButtonEl.click(function (e) {
@@ -39,17 +36,27 @@ searchButtonEl.click(function (e) {
   e.preventDefault();
 
   //Clear last search's stats
-  cityNameEl.empty();
-  tempEl.empty();
-  humidityEl.empty();
-  windSpeedEl.empty();
-  uvIndexEl.empty();
+  function clearDisplay() {
+    cityNameEl.empty();
+    tempEl.empty();
+    humidityEl.empty();
+    windSpeedEl.empty();
+    uvIndexEl.empty();
+    iconContainer.empty();
+  }
+  clearDisplay();
 
   //User input becomes stored in local storage and...
   searchedCity = searchBoxEl.val();
   localStorage.setItem(key++, searchedCity);
   //...added to the search hx display
-  searchHxEl.append(`<p>${searchedCity}`);
+  var hxButton = $(`<button>${searchedCity}</button>`);
+  hxButton.attr({
+    type: "submit",
+    id: "hx-btn",
+    display: "block",
+  });
+  searchHxUl.append(hxButton);
 
   //Daily forecast fetched
   dailyForecast();
@@ -68,20 +75,17 @@ function dailyForecast() {
       return response.json();
     })
     .then(function (data) {
-      console.log("first fetch return", data);
-      
       var iconCode = data.weather[0].icon;
       var img = $("<img>");
-      img.attr("src", "https://openweathermap.org/img/wn/" + iconCode + "@2x.png");
-      cityDisplayEl.append(img);
-
-
+      img.attr(
+        "src",
+        "https://openweathermap.org/img/wn/" + iconCode + "@2x.png"
+      );
+      iconContainer.append(img);
       cityNameEl.append(`<p>${searchedCity}`);
       tempEl.append("Temperature: " + data.main.temp + "&deg;F");
       humidityEl.append("Humidity: " + data.main.humidity + "%");
       windSpeedEl.append("Wind Speed: " + data.wind.speed + "mph");
-
-      
 
       //Getting current search's lon/lat for UV API
       currentLon = data.coord.lon;
@@ -111,31 +115,48 @@ function dailyForecast() {
             $("#uv-index").css("color", "green");
           }
         });
-    });
 
-  //Url for 5 Day Forecast API
-  var fiveDayUrl =
-    "https://api.openweathermap.org/data/2.5/forecast?q=" +
-    searchedCity +
-    "&units=imperial&appid=" +
-    myKey;
+      //Url for 5 Day Forecast API
+      var fiveDayUrl =
+        "https://api.openweathermap.org/data/2.5/forecast?q=" +
+        searchedCity +
+        "&units=imperial&appid=" +
+        myKey;
 
-  //Fetch 5 Day Forecast
-  fetch(fiveDayUrl)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      //Console log the next 5 days of the forecast
-      for (var i = 3; i < data.list.length; i += 8) {
-        nextDay = moment(data.list[i].dt_txt).format("dddd, MMM Do, YYYY");
-        nextTemp = data.list[i].main.temp;
-        nextHumidity = data.list[i].main.humidity;
-      }
+      //Fetch 5 Day Forecast
+      fetch(fiveDayUrl)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data, "working");
+          //Console log the next 5 days of the forecast
+          for (var i = 3; i < data.list.length; i += 8) {
+            nextDay = moment(data.list[i].dt_txt).format("dddd, MMM Do, YYYY");
+            nextTemp = data.list[i].main.temp;
+            nextHumidity = data.list[i].main.humidity;
+            nextIcon = data.list[i].weather[0].icon;
 
-      //Assign temps, humidity, and icons to correct day in 5 day forecast
-      for (var i = 0; i < $(".forecast-temp"); i++) {}
+
+            $("#card-container").append(`
+            <div class="card">
+                    <p>${nextDay}</p>
+                    <ul>
+                        <li>
+                        <img src="https://openweathermap.org/img/wn/" + nextIcon + "@2x.png">
+                        </li>
+                        <li>Temp: ${nextTemp}</li>
+                        <li>Humidity: ${nextHumidity}</li>
+                    </ul>
+                </div>
+            `);
+          }
+
+          
+
+          //Assign temps, humidity, and icons to correct day in 5 day forecast
+          for (var i = 0; i < $(".forecast-temp"); i++) {}
+        });
     });
 
   // cityNameEl.append(`<p>${searchedCity}`);

@@ -1,15 +1,21 @@
 body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Roboto", sans-serif;
     display: flex;
+    background-color:rgb(231, 178, 203);
+    background-image: url("https://images.unsplash.com/photo-1557683311-eac922347aa1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1315&q=80");
+    background-size: cover;
+    
 }
 
 h1 {
-    font-size: 30px;
+    font-family: "Poppins", sans-serif;
+    font-size: 50px;
     margin: 0;
     padding: 0;
 }
 
 h2 {
+    font-family: "Poppins", sans-serif;
     font-size: 18px;
     padding: 0;
     line-height: 0;
@@ -17,12 +23,40 @@ h2 {
 
 #city-name-and-icon {
     display: flex;
+    
 }
 
 .container {
     border: 1px solid gray;
-    margin: 5px;
+    margin: 15px;
     padding: 10px;
+    background-color:  rgba(255, 255, 255, 0.45);
+    text-align: center;
+    border-radius: 5px;
+
+}
+
+#date-container {
+    border: none;
+    background: none;
+    margin: 30px;
+}
+
+#date-container h1 {
+    color: white;
+    text-shadow: 1px 3px 2px rgba(0,0,0,0.6);
+}
+
+#city-name h1 {
+    font-size: 50px;
+}
+
+#city-display h2 {
+    font-size: 38px;
+}
+
+#city-display {
+    font-size: 22px;
 }
 
 ul.ul {
@@ -34,19 +68,35 @@ ul.ul {
 }
 
 .card {
-    background-color: blue;
+    width: 150px;
+    height: 300px;
+    background-color: rgb(113, 163, 255);
     margin: 15px;
     color: white;
     padding: 10px;
+    border-radius: 5px;
+    border:pink solid 2px;
+    box-shadow: -5px 8px 6px 0px rgba(255, 97, 189, 0.75);
+-webkit-box-shadow: -6px 8px 6px 0px rgba(255, 97, 189, 0.75);
+-moz-box-shadow: -5px 8px 5px 0px rgba(255, 97, 189, 0.75);
 }
 
 .storedCities {
     margin: 10px;
 }
 
-.storedCities p {
+.search-hx {
+    display: flex;
+    flex-direction: column;
+}
+
+.hxBtn {
     border: 1px solid gray;
     padding: 5px;
     margin: 0;
     background-color: rgb(228, 228, 228);
+}
+
+#head {
+    display: flex;
 }

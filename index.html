@@ -7,6 +7,8 @@
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;1,100;1,400&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="container" id="search-and-hx">
@@ -18,15 +20,21 @@
             <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
         </form>
         <div id="search-hx" class="storedCities">
+            <ul id="hx-list">
+
+            </ul>
         </div>
     </header>
     <main id="main"> 
+        <section class="container" id="date-container">
+            <h1 id="date"></h1>
+        </section>
         <section class="container" id="city-display">
-            <div id="city-name-and-icon">
-                <h1 id="city-name">
-                </h1>
+            <h1 id="city-name">
+            </h1>
+            <div id="head">
+                <div id="city-name-and-icon"></div>
             </div>
-            <h2 id="date"></h2>
             <ul class="ul" "main-stats">
                 <li id="temp">Temperature: </li>
                 <li id="humidity">Humidity: </li>
@@ -35,9 +43,9 @@
             </ul>
         </section>
         <section class="container" id="five-day-forecast">
-            <h2>5-Day Forecast</h2>
+            <h1>5-Day Forecast</h1>
             <div class="card-container" id="card-container">
-                <div class="card" id="day-1">
+                <!-- <div class="card" id="day-1">
                     <p class="date" id="day-1-date"></p>
                     <ul class="ul" id="day-1-stats">
                         <li class="li" id="day-1-img"></li>
@@ -45,6 +53,16 @@
                         <li class="li" id="day-1-humidity">Humidity:</li>
                     </ul>
                 </div>
+
+                <div>
+                    <p></p>
+                    <ul>
+                        <li></li>
+                        <li>Temp:</li>
+                        <li>Humidity:</li>
+                    </ul>
+                </div>
+
                 <div class="card" id="day-2">
                     <p class="date" id="day-2-date"></p>
                     <ul class="ul" id="day-1-stats">
@@ -76,7 +94,7 @@
                         <li class="forecast-temp" id="day-5-temp">Temp:</li>
                         <li class="li" id="day-5-humidity">Humidity:</li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </section>
     </main>
