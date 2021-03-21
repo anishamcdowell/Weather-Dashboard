@@ -34,8 +34,10 @@ $("#date").append(currentDate);
 singleDayStats.addClass("hidden");
 fiveDayStats.addClass("hidden");
 
+var localMemory = window.localStorage.getItem("searchedCity");
+
 //When the user types in a city and hits the search button
-searchButtonEl.click(function (e) {
+searchButtonEl.click(function getWeather(e) {
   //Prevent form submit refresh
   e.preventDefault();
 
@@ -49,7 +51,7 @@ searchButtonEl.click(function (e) {
     iconContainer.empty();
   }
   clearDisplay();
-
+  
   singleDayStats.removeClass("hidden");
   fiveDayStats.removeClass("hidden");
 

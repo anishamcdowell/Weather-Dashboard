@@ -55,10 +55,6 @@ h2 {
     background-color:  rgba(255, 255, 255, 0.45);
     text-align: center;
     border-radius: 5px;
-    /* display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center; */
 
 }
 
@@ -88,6 +84,10 @@ ul.ul {
     text-align: center;
 }
 
+#five-day-forecast h1 {
+    text-align: center;
+}
+
 .card {
     width: 150px;
     height: 230px;
@@ -95,7 +95,7 @@ ul.ul {
     margin: 15px;
     padding: 10px;
     border-radius: 5px;
-    border:pink solid 2px;
+    border: 1px solid gray;
 }
 
 .storedCities {

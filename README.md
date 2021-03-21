@@ -4,7 +4,7 @@
 [https://anishamcdowell.github.io/Weather-Dashboard/](https://anishamcdowell.github.io/Weather-Dashboard/)
 
 ## Screenshot
-![/assets/Weather-Dashboard.gif](/assets/Weather-Dashboard.gif)
+![/assets/weather-gif.gif](/assets/weather-gif.gif)
 
 ## Project Description
 
