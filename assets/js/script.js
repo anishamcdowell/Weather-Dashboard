@@ -13,6 +13,8 @@ var humidityEl = $("#humidity");
 var windSpeedEl = $("#wind-speed");
 var uvIndexEl = $("#uv-index");
 var iconContainer = $("#city-name-and-icon");
+var singleDayStats = $("#city-display");
+var fiveDayStats = $("#five-day-forecast");
 
 //USER DEPENDENT VARIABLES
 var searchedCity;
@@ -29,6 +31,8 @@ for (var i = 0; i < localStorage.length; i++) {
 $();
 //INITIAL LOAD BEHAVIOR
 $("#date").append(currentDate);
+singleDayStats.addClass("hidden");
+fiveDayStats.addClass("hidden");
 
 //When the user types in a city and hits the search button
 searchButtonEl.click(function (e) {
@@ -45,6 +49,9 @@ searchButtonEl.click(function (e) {
     iconContainer.empty();
   }
   clearDisplay();
+
+  singleDayStats.removeClass("hidden");
+  fiveDayStats.removeClass("hidden");
 
   //User input becomes stored in local storage and...
   searchedCity = searchBoxEl.val();
@@ -141,9 +148,9 @@ function dailyForecast() {
             $("#card-container").append(`
             <div class="card">
                     <p>${nextDay}</p>
-                    <ul>
+                    <ul class="ul">
                         <li>
-                        <img src="https://openweathermap.org/img/wn/" + nextIcon + "@2x.png">
+                        <img src="https://openweathermap.org/img/wn/${nextIcon}@2x.png">
                         </li>
                         <li>Temp: ${nextTemp}</li>
                         <li>Humidity: ${nextHumidity}</li>

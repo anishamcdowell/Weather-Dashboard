@@ -7,9 +7,16 @@ body {
     
 }
 
-h1 {
+#date {
     font-family: "Poppins", sans-serif;
     font-size: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-family: "Poppins", sans-serif;
+    font-size: 40px;
     margin: 0;
     padding: 0;
 }
@@ -22,7 +29,8 @@ h2 {
 }
 
 #city-name-and-icon {
-    display: flex;
+    padding: 0;
+    margin: 0;
     
 }
 
@@ -33,6 +41,24 @@ h2 {
     background-color:  rgba(255, 255, 255, 0.45);
     text-align: center;
     border-radius: 5px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#search-and-hx {
+    border: 1px solid gray;
+    margin: 15px;
+    padding: 10px;
+    background-color:  rgba(255, 255, 255, 0.45);
+    text-align: center;
+    border-radius: 5px;
+    /* display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center; */
 
 }
 
@@ -47,38 +73,29 @@ h2 {
     text-shadow: 1px 3px 2px rgba(0,0,0,0.6);
 }
 
-#city-name h1 {
-    font-size: 50px;
-}
-
-#city-display h2 {
-    font-size: 38px;
-}
 
 #city-display {
-    font-size: 22px;
+    font-size: 18px;
 }
 
 ul.ul {
-    list-style: none;
+    padding: 0;
+    list-style-type: none;
 }
 
 .card-container {
     display: flex;
+    text-align: center;
 }
 
 .card {
     width: 150px;
-    height: 300px;
-    background-color: rgb(113, 163, 255);
+    height: 230px;
+    background-color: rgba(255, 255, 255, 0.45);
     margin: 15px;
-    color: white;
     padding: 10px;
     border-radius: 5px;
     border:pink solid 2px;
-    box-shadow: -5px 8px 6px 0px rgba(255, 97, 189, 0.75);
--webkit-box-shadow: -6px 8px 6px 0px rgba(255, 97, 189, 0.75);
--moz-box-shadow: -5px 8px 5px 0px rgba(255, 97, 189, 0.75);
 }
 
 .storedCities {
@@ -99,4 +116,10 @@ ul.ul {
 
 #head {
     display: flex;
+    flex-flow: column wrap;
+    padding: 0;
+}
+
+.hidden {
+    display: none;
 }
