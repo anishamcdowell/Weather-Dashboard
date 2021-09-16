@@ -1,61 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Dashboard</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;1,100;1,400&family=Roboto&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header class="container" id="search-and-hx">
-        <div id="search">
-            <h3>Search for a city:</h3>
-        </div>
-        <form id="search-form">
-            <input type="text" placeholder="Search" class="search" id="search-box">
-            <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
-        </form>
-        <div id="search-hx" class="storedCities">
-            <ul id="hx-list">
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <section class="wrapper" id="current-location">
+      <p>Current Location</p>
+      <div>
+        <h1 id="current-city-name"></h1>
+        <div id="current-city-name-and-icon"></div>
+      </div>
 
-            </ul>
+      <ul class="ul">
+        <li id="current-temp">Temperature:</li>
+        <li id="current-humidity">Humidity:</li>
+        <li id="current-wind-speed">Wind Speed:</li>
+        <li id="current-uv-index">UV Index:</li>
+      </ul>
+    </section>
+    <nav class="wrapper" id="search-and-hx">
+      <h3>Search for a city:</h3>
+      <form id="search-form">
+        <input
+          type="text"
+          placeholder="Search"
+          class="search"
+          id="search-box"
+        />
+        <button type="submit" id="search-btn">
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+      <div id="search-hx" class="storedCities">
+        <ul id="hx-list"></ul>
+      </div>
+    </nav>
+    <main class="wrapper" id="search-results">
+      <h1 id="date"></h1>
+      <div class="container" id="city-display">
+        <div id="head">
+          <h1 id="city-name"></h1>
+          <div id="city-name-and-icon"></div>
         </div>
-    </header>
-    <main id="main"> 
-        <section class="container" id="date-container">
-            <h1 id="date"></h1>
-        </section>
-        <section class="container" id="city-display">
-            <div id="head">
-                <h1 id="city-name">
-                </h1>
-                <div id="city-name-and-icon"></div>
-            </div>
-            
-            <ul class="ul" id ="main-stats">
-                <li id="temp">Temperature: </li>
-                <li id="humidity">Humidity: </li>
-                <li id="wind-speed">Wind Speed: </li>
-                <li id="uv-index">UV Index: </li>
-            </ul>
-        </section>
-        <section id="five-day-forecast">
-            <h1>5-Day Forecast</h1>
-            <div class="card-container" id="card-container">
-                
-            </div>
-        </section>
+
+        <ul class="ul" id="main-stats">
+          <li id="temp">Temperature:</li>
+          <li id="humidity">Humidity:</li>
+          <li id="wind-speed">Wind Speed:</li>
+          <li id="uv-index">UV Index:</li>
+        </ul>
+      </div>
+      <div id="five-day-forecast">
+        <h1>5-Day Forecast</h1>
+        <div class="container" id="card-container"></div>
+      </div>
     </main>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
       integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+    ></script>
     <script src="assets/js/script.js"></script>
-</body>
+    <script src="assets/js/currentLocation.js"></script>
+    <script src="assets/js/search.js"></script>
+    <script src="assets/js/searchResults.js"></script>
+  </body>
 </html>
