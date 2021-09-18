@@ -1,13 +1,35 @@
+#search-and-hx {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
 #search {
-  justify-content: center;
+  text-align: center;
+  max-height: 6rem;
+  position: absolute;
+}
+
+#search-form {
 }
 
 #search button {
   all: unset;
   color: white;
   padding: 0.25rem;
+  position: absolute;
 }
 
 #search button:hover {
   color: black;
+}
+
+.storedCities {
+  border-bottom: 1px solid yellow;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  position: relative;
+  top: 6rem;
 }

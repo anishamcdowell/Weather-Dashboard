@@ -8,8 +8,6 @@ var currentDate = moment().format('dddd, MMM Do, YYYY');
 var searchBox = $('#search-box');
 var searchButton = $('#search-btn');
 var searchHx = $('#search-hx');
-var searchDiv = $('#search-and-hx');
-var searchDivHeight = `${searchDiv.height()}px`;
 // Search result elements
 var cityNameEl = $('#city-name');
 var iconContainer = $('#city-name-and-icon');
@@ -20,9 +18,21 @@ var uvIndexEl = $('#uv-index');
 var singleDayStats = $('#city-display');
 var fiveDayStats = $('#five-day-forecast');
 
+var searchDiv = $('#search-and-hx');
+var searchDivHeight = Math.floor(`${searchDiv.height()}`);
+var searchHxHeight = Math.floor(`${searchHx.height()}`);
+var searchButtonHeight = Math.floor(`${searchButton.height()}`);
+// let searchHistoryNum = searchButtonHeight +
+
+var maxButtons = searchHxHeight / 39;
+var maxBtns = (searchDivHeight * 46.95) / 39;
+
 //USER DEPENDENT VARIABLES
 let currentLon;
 let currentLat;
+
+let height = searchHx.css('height');
+let btnHeight = searchButton.css('height') + searchButton.css('margin-bottom');
 
 //INITIAL LOAD BEHAVIOR
 $('#date').append(currentDate);
@@ -41,7 +51,17 @@ $(window).on('load', (e) => {
       searchHx.append(`<button class=${city}>${city}</button>`);
     }
   }
-  console.log(searchDivHeight);
+
+  console.log('div height=', searchDivHeight);
+  console.log('search hx height=', searchHxHeight);
+  console.log('search button height =', searchButtonHeight);
+  console.log('max buttons you can display =', maxBtns);
+  console.log('max 2', max);
+  // let maxSearchDisplay =
+  //   searchHxHeight >= searchDivHeight * 0.66
+  //     ? searchHxHeight / 19 / 2 - 1
+  //     : searchHxHeight;
+  // console.log(maxSearchDisplay);
 });
 
 // When user searches for a city

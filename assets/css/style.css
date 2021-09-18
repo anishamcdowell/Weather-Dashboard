@@ -5,7 +5,7 @@ body {
     'section main main'
     'nav main main'
     'nav main main';
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 30% 80%;
   grid-template-rows: 35% 65%;
 }
 
@@ -58,7 +58,6 @@ button {
   text-transform: capitalize;
   border-radius: 5rem;
   padding: 0.5rem;
-  margin-bottom: 0.5rem;
   width: 50%;
   background: black;
   color: white;
