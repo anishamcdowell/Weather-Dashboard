@@ -1,7 +1,7 @@
 body {
-  margin: 0 auto;
-  width: 100%;
-  height: 100vh;
+  margin: 5rem auto;
+  width: 80vw;
+  height: calc(100vh - 10rem);
   display: grid;
   grid-template-areas:
     'section main main'
@@ -9,11 +9,15 @@ body {
     'nav main main';
   grid-template-columns: 20% 80%;
   grid-template-rows: 35% 65%;
+  background: linear-gradient(to bottom, pink, blue);
+  background-attachment: fixed;
 }
 
 .wrapper {
   padding: 2rem;
   margin: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
 }
 
 .container {
@@ -42,8 +46,6 @@ button:hover {
 }
 
 #current-location {
-  background: blue;
-
   grid-column: 1/2;
   grid-row: 1/2;
 }
@@ -66,7 +68,6 @@ img {
 }
 
 #search-and-hx {
-  background: red;
   grid-column: 1/2;
   grid-row: 2/3;
   display: grid;
@@ -80,7 +81,6 @@ img {
 }
 
 #search {
-  background: green;
   justify-content: center;
 }
 
@@ -95,7 +95,10 @@ img {
 }
 
 #search-results {
-  background: yellow;
   grid-column: 2/3;
   grid-row: 1/3;
+}
+
+#city-name {
+  text-transform: capitalize;
 }

@@ -1,6 +1,6 @@
 // API ELEMENTS
 var apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-var myKey = 'a590260e0a66edf711e2ebae9ded9db5';
+var myKey = 'c532a4ca316c5a5b851492ddb2488a5c';
 
 //HTML ELEMENTS
 var currentDate = moment().format('dddd, MMM Do, YYYY');
@@ -58,6 +58,23 @@ function searchInput() {
 // Fetch forecast
 function getForecast(searchedCity) {
   console.log('getforecast function =', searchedCity);
+  let searchUrl = `${apiUrl}?q=${searchedCity}&units=imperial&appid=${myKey}`;
+
+  fetch(searchUrl)
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res);
+      const icon = res.weather[0].icon;
+      const img = $('<img>');
+      img.attr('src', `https://openweathermap.org/img/wn/${icon}@2x.png`);
+      iconContainer.append(img);
+      cityNameEl.append(`<p>${searchedCity}`);
+      tempEl.append(res.main.temp + '&deg;F');
+      humidityEl.append(res.main.humidity + '%');
+      windSpeedEl.append(res.wind.speed + 'mph');
+    });
 }
 
 // Take captured data and save to localStorage and display in search history dvi
@@ -95,3 +112,9 @@ function getAndSaveUserSearch(userInput) {
     searchHx.empty();
   }
 }
+
+// TO-DO: When user selects search history button
+// historyBtn.click((e) => {
+//   e.preventDefault();
+//   getForecast(searchInput());
+// });
