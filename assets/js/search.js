@@ -48,20 +48,11 @@ $(window).on('load', (e) => {
       city !== 'removeItem' &&
       city !== 'setItem'
     ) {
-      searchHx.append(`<button class=${city}>${city}</button>`);
+      searchHx.append(
+        `<button class="searched-city" id=${city}>${city}</button>`
+      );
     }
   }
-
-  console.log('div height=', searchDivHeight);
-  console.log('search hx height=', searchHxHeight);
-  console.log('search button height =', searchButtonHeight);
-  console.log('max buttons you can display =', maxBtns);
-  console.log('max 2', max);
-  // let maxSearchDisplay =
-  //   searchHxHeight >= searchDivHeight * 0.66
-  //     ? searchHxHeight / 19 / 2 - 1
-  //     : searchHxHeight;
-  // console.log(maxSearchDisplay);
 });
 
 // When user searches for a city
@@ -136,8 +127,8 @@ function getAndSaveUserSearch(userInput) {
   }
 }
 
-// TO-DO: When user selects search history button
-// historyBtn.click((e) => {
-//   e.preventDefault();
-//   getForecast(searchInput());
-// });
+//When user selects search history button
+searchHx.on('click', 'button', (e) => {
+  e.preventDefault();
+  getForecast($(e.target).text());
+});
