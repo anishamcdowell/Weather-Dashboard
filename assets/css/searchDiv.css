@@ -2,6 +2,7 @@
   display: flex;
   flex-flow: column;
   align-items: center;
+  overflow: hidden;
 }
 
 #search {
@@ -25,11 +26,12 @@
 }
 
 .storedCities {
-  border-bottom: 1px solid yellow;
   width: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
   position: relative;
   top: 6rem;
+  height: 70%;
+  overflow-y: scroll;
 }
