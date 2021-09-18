@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/currentLocation.css" />
+    <link rel="stylesheet" href="assets/css/searchDiv.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
   </head>
   <body>
+    <!-- CURRENT LOCATION DIV -->
     <section class="wrapper" id="current-location">
       <p>Current Location</p>
       <div>
@@ -26,6 +29,8 @@
         <li id="current-uv-index">UV Index:</li>
       </ul>
     </section>
+
+    <!-- SEARCH AND HISTORY DIV -->
     <nav class="wrapper" id="search-and-hx">
       <div id="search">
         <h3>Search for a city:</h3>
@@ -43,6 +48,8 @@
       </div>
       <div id="search-hx" class="storedCities"></div>
     </nav>
+
+    <!-- SEARCH RESULTS DIV-->
     <main class="wrapper" id="search-results">
       <h1 id="date"></h1>
       <div class="container" id="city-display">
@@ -63,6 +70,8 @@
         <div class="container" id="card-container"></div>
       </div>
     </main>
+
+    <!-- SCRIPTS -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
       integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
@@ -76,6 +85,5 @@
     <script src="assets/js/script.js"></script>
     <script src="assets/js/currentLocation.js"></script>
     <script src="assets/js/search.js"></script>
-    <!-- <script src="assets/js/searchResults.js"></script> -->
   </body>
 </html>

@@ -1,0 +1,13 @@
+#search {
+  justify-content: center;
+}
+
+#search button {
+  all: unset;
+  color: white;
+  padding: 0.25rem;
+}
+
+#search button:hover {
+  color: black;
+}

@@ -1,6 +1,6 @@
 // API ELEMENTS
-var apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-var myKey = 'c532a4ca316c5a5b851492ddb2488a5c';
+const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+const myKey = 'c532a4ca316c5a5b851492ddb2488a5c';
 
 //HTML ELEMENTS
 var currentDate = moment().format('dddd, MMM Do, YYYY');
@@ -8,6 +8,8 @@ var currentDate = moment().format('dddd, MMM Do, YYYY');
 var searchBox = $('#search-box');
 var searchButton = $('#search-btn');
 var searchHx = $('#search-hx');
+var searchDiv = $('#search-and-hx');
+var searchDivHeight = `${searchDiv.height()}px`;
 // Search result elements
 var cityNameEl = $('#city-name');
 var iconContainer = $('#city-name-and-icon');
@@ -19,8 +21,8 @@ var singleDayStats = $('#city-display');
 var fiveDayStats = $('#five-day-forecast');
 
 //USER DEPENDENT VARIABLES
-var currentLon;
-var currentLat;
+let currentLon;
+let currentLat;
 
 //INITIAL LOAD BEHAVIOR
 $('#date').append(currentDate);
@@ -39,6 +41,7 @@ $(window).on('load', (e) => {
       searchHx.append(`<button class=${city}>${city}</button>`);
     }
   }
+  console.log(searchDivHeight);
 });
 
 // When user searches for a city
