@@ -1,14 +1,16 @@
-// API ELEMENTS
-const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+var currentDate = moment().format('dddd, MMM Do, YYYY');
+
+// API elements
+const apiUrl = 'https://api.openweathermap.org/data/2.5';
 const myKey = 'c532a4ca316c5a5b851492ddb2488a5c';
 
-//HTML ELEMENTS
-var currentDate = moment().format('dddd, MMM Do, YYYY');
 // Search elements
 var searchBox = $('#search-box');
 var searchButton = $('#search-btn');
-var searchHx = $('#search-hx');
+var searchHxDiv = $('#search-hx');
+
 // Search result elements
+var cityStats = $('.stat');
 var cityNameEl = $('#city-name');
 var iconContainer = $('#city-name-and-icon');
 var tempEl = $('#temp');
@@ -18,27 +20,15 @@ var uvIndexEl = $('#uv-index');
 var singleDayStats = $('#city-display');
 var fiveDayStats = $('#five-day-forecast');
 
-var searchDiv = $('#search-and-hx');
-var searchDivHeight = Math.floor(`${searchDiv.height()}`);
-var searchHxHeight = Math.floor(`${searchHx.height()}`);
-var searchButtonHeight = Math.floor(`${searchButton.height()}`);
-// let searchHistoryNum = searchButtonHeight +
-
-var maxButtons = searchHxHeight / 39;
-var maxBtns = (searchDivHeight * 46.95) / 39;
-
-//USER DEPENDENT VARIABLES
+//User location elements
 let currentLon;
 let currentLat;
 
-let height = searchHx.css('height');
-let btnHeight = searchButton.css('height') + searchButton.css('margin-bottom');
-
-//INITIAL LOAD BEHAVIOR
-$('#date').append(currentDate);
-
-// On load display most recently searched cities in search history div
+// On load..
 $(window).on('load', (e) => {
+  //..display current date/time and search history..
+  $('#date').append(currentDate);
+  //..display search hx as buttons..
   for (city in localStorage) {
     if (
       city !== 'length' &&
@@ -46,62 +36,44 @@ $(window).on('load', (e) => {
       city !== 'getItem' &&
       city !== 'key' &&
       city !== 'removeItem' &&
-      city !== 'setItem'
+      city !== 'setItem' &&
+      city !== 'lastSearch'
     ) {
-      searchHx.append(
+      searchHxDiv.append(
         `<button class="searched-city" id=${city}>${city}</button>`
       );
     }
   }
+  getForecast(localStorage.getItem('lastSearch'));
 });
 
-// When user searches for a city
+// When user searches for a city...
 searchButton.click((e) => {
   e.preventDefault();
-  // Get user's search box input and save to localStorage and display in search history div
   getAndSaveUserSearch(searchInput());
   getForecast(searchInput());
 });
 
-// Capture user's input from the search box
+// ...Capture user's input from the search box
 function searchInput() {
   let searchedCity = searchBox.val();
   return searchedCity.toLowerCase();
 }
 
-// Fetch forecast
-function getForecast(searchedCity) {
-  console.log('getforecast function =', searchedCity);
-  let searchUrl = `${apiUrl}?q=${searchedCity}&units=imperial&appid=${myKey}`;
-
-  fetch(searchUrl)
-    .then((res) => {
-      return res.json();
-    })
-    .then((res) => {
-      console.log(res);
-      const icon = res.weather[0].icon;
-      const img = $('<img>');
-      img.attr('src', `https://openweathermap.org/img/wn/${icon}@2x.png`);
-      iconContainer.append(img);
-      cityNameEl.append(`<p>${searchedCity}`);
-      tempEl.append(res.main.temp + '&deg;F');
-      humidityEl.append(res.main.humidity + '%');
-      windSpeedEl.append(res.wind.speed + 'mph');
-    });
-}
-
-// Take captured data and save to localStorage and display in search history dvi
+// ...Save user input to localStorage and display in search history
 function getAndSaveUserSearch(userInput) {
   let storageLength = localStorage.length;
-  let displayLength = searchHx.children().length;
+  let displayLength = searchHxDiv.children().length;
   let whatsInStorage = JSON.parse(localStorage.getItem(userInput));
 
   if (userInput == '') {
     alert('No city specified');
   } else {
     if (storageLength < 7 && displayLength < 7) {
-      if (userInput !== whatsInStorage && !searchHx.hasClass(`${userInput}`)) {
+      if (
+        userInput !== whatsInStorage &&
+        !searchHxDiv.hasClass(`${userInput}`)
+      ) {
         setData(userInput);
       } else if (storageLength > 7 && displayLength > 7) {
         clearData();
@@ -117,18 +89,51 @@ function getAndSaveUserSearch(userInput) {
   // Set data in local storage and as an HTML element
   function setData(userInput) {
     localStorage.setItem(userInput, JSON.stringify(userInput));
-    searchHx.prepend(`<button class="${userInput}">${userInput}</button>`);
+    searchHxDiv.prepend(`<button class="${userInput}">${userInput}</button>`);
   }
 
-  // Remove data from local storage and from display in search history div
+  // Remove data from local storage and from search history display
   function clearData() {
     localStorage.clear();
-    searchHx.empty();
+    searchHxDiv.empty();
   }
 }
 
+// ...Fetch forecast for chosen city
+function getForecast(searchedCity) {
+  let searchUrl = `${apiUrl}/weather?q=${searchedCity}&units=imperial&appid=${myKey}`;
+  let fiveDaySearchUrl = `${apiUrl}/forecast?q=${searchedCity}&appid=${myKey}`;
+
+  Promise.all([fetch(searchUrl), fetch(fiveDaySearchUrl)])
+    .then(async ([res1, res2]) => {
+      const oneDayRes = await res1.json();
+      const fiveDayRes = await res2.json();
+      console.log(oneDayRes, fiveDayRes);
+      return [oneDayRes, fiveDayRes];
+    })
+    .then(([oneDayRes, fiveDayRes]) => {
+      // One Day Weather
+      cityStats.html('');
+      const icon = oneDayRes.weather[0].icon;
+      const img = $('<img>');
+      img.attr('src', `https://openweathermap.org/img/wn/${icon}@2x.png`);
+      iconContainer.append(img);
+      cityNameEl.append(`<p>${searchedCity}`);
+      tempEl.append(`Temperature: ${oneDayRes.main.temp} &deg;F`);
+      humidityEl.append(`Humidity: ${oneDayRes.main.humidity}%`);
+      windSpeedEl.append(`Wind Speed: ${oneDayRes.wind.speed} mph`);
+      // Five Day Forecast
+      // fiveDayRes.
+    });
+  getLastSearch(searchedCity);
+}
+
 //When user selects search history button
-searchHx.on('click', 'button', (e) => {
+searchHxDiv.on('click', 'button', (e) => {
   e.preventDefault();
   getForecast($(e.target).text());
 });
+
+function getLastSearch(cityName) {
+  localStorage.setItem('lastSearch', cityName);
+}
