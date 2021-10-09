@@ -108,10 +108,14 @@ function getForecast(searchedCity) {
     .then(async ([res1, res2]) => {
       const oneDayRes = await res1.json();
       const fiveDayRes = await res2.json();
-      console.log(oneDayRes, fiveDayRes);
       return [oneDayRes, fiveDayRes];
     })
     .then(([oneDayRes, fiveDayRes]) => {
+      console.log(fiveDayRes);
+      const entries = Object.entries(fiveDayRes);
+      const days = entries[3][1];
+      console.log(days);
+
       // One Day Weather
       cityStats.html('');
       const icon = oneDayRes.weather[0].icon;
@@ -123,7 +127,10 @@ function getForecast(searchedCity) {
       humidityEl.append(`Humidity: ${oneDayRes.main.humidity}%`);
       windSpeedEl.append(`Wind Speed: ${oneDayRes.wind.speed} mph`);
       // Five Day Forecast
-      // fiveDayRes.
+      // fiveDayRes
+      // fiveDayRes.map((result) => {
+      //   fiveDayStats.json();
+      // });
     });
   getLastSearch(searchedCity);
 }
