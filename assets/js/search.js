@@ -111,26 +111,32 @@ function getForecast(searchedCity) {
       return [oneDayRes, fiveDayRes];
     })
     .then(([oneDayRes, fiveDayRes]) => {
-      console.log(fiveDayRes);
-      const entries = Object.entries(fiveDayRes);
-      const days = entries[3][1];
-      console.log(days);
+      //Constructor for weather data that gets fetched to use on both current day results and each individual day on the five day forecast
+      function Stats(temp, humidity, windSpeed, image) {
+        this.temp = temp;
+        this.humidity = humidity,
+        this.windSpeed = windSpeed;
+        this.image = image;
+      }
+
+      const currentDay = new Stats(
+        `Temperature: ${oneDayRes.main.temp} &deg;F`,
+        `Humidity: ${oneDayRes.main.humidity}%`,
+        `Wind Speed: ${oneDayRes.wind.speed} mph`,
+        `https://openweathermap.org/img/wn/${oneDayRes.weather[0].icon}@2x.png`
+      )
 
       // One Day Weather
       cityStats.html('');
-      const icon = oneDayRes.weather[0].icon;
-      const img = $('<img>');
-      img.attr('src', `https://openweathermap.org/img/wn/${icon}@2x.png`);
-      iconContainer.append(img);
+      iconContainer.append($('<img>').attr('src', currentDay.image));
       cityNameEl.append(`<p>${searchedCity}`);
-      tempEl.append(`Temperature: ${oneDayRes.main.temp} &deg;F`);
-      humidityEl.append(`Humidity: ${oneDayRes.main.humidity}%`);
-      windSpeedEl.append(`Wind Speed: ${oneDayRes.wind.speed} mph`);
+      tempEl.append(currentDay.temp);
+      humidityEl.append(currentDay.humidity);
+      windSpeedEl.append(currentDay.windSpeed);
       // Five Day Forecast
-      // fiveDayRes
-      // fiveDayRes.map((result) => {
-      //   fiveDayStats.json();
-      // });
+      const fiveDayIcon = fiveDayRes.list[0].weather[0].icon;
+      const fiveDayImg = $('<img>').attr('src', `https://openweathermap.org/img/wn/${fiveDayIcon}@2x.png`);
+      fiveDayStats.append(fiveDayImg);
     });
   getLastSearch(searchedCity);
 }
