@@ -9,26 +9,29 @@ var searchBox = $('#search-box');
 var searchButton = $('#search-btn');
 var searchHxDiv = $('#search-hx');
 
-// Search result elements
+// Current day's elements
 var cityStats = $('.stat');
 var cityNameEl = $('#city-name');
-var iconContainer = $('#city-name-and-icon');
+var currentDayIconContainer = $('#city-name-and-icon');
+var currentDayStatsContainer = $('#current-day-stats');
 var tempEl = $('#temp');
 var humidityEl = $('#humidity');
 var windSpeedEl = $('#wind-speed');
 var uvIndexEl = $('#uv-index');
-var singleDayStats = $('#city-display');
+
+// Five day forecast elements
 var fiveDayStats = $('#five-day-forecast');
+var fiveDayIconContainer = $('#five-day-icon-container');
+var fiveDayStatsContainer = $('#five-day-stats');
 
 //User location elements
 let currentLon;
 let currentLat;
 
-// On load..
 $(window).on('load', (e) => {
-  //..display current date/time and search history..
+  // Display current date/time and search history
   $('#date').append(currentDate);
-  //..display search hx as buttons..
+  // Display search hx as buttons
   for (city in localStorage) {
     if (
       city !== 'length' &&
@@ -54,13 +57,13 @@ searchButton.click((e) => {
   getForecast(searchInput());
 });
 
-// ...Capture user's input from the search box
+// ...capture user's input from the search box...
 function searchInput() {
   let searchedCity = searchBox.val();
   return searchedCity.toLowerCase();
 }
 
-// ...Save user input to localStorage and display in search history
+// ...save user input to localStorage and display in search history
 function getAndSaveUserSearch(userInput) {
   let storageLength = localStorage.length;
   let displayLength = searchHxDiv.children().length;
@@ -111,32 +114,86 @@ function getForecast(searchedCity) {
       return [oneDayRes, fiveDayRes];
     })
     .then(([oneDayRes, fiveDayRes]) => {
-      //Constructor for weather data that gets fetched to use on both current day results and each individual day on the five day forecast
-      function Stats(temp, humidity, windSpeed, image) {
-        this.temp = temp;
-        this.humidity = humidity,
-        this.windSpeed = windSpeed;
-        this.image = image;
+      // Clear the current search results and set to new city
+      cityStats.html('');
+      cityNameEl.append(`<p>${searchedCity}`);
+
+      //Constructor for both one day and each five day forecast to use when displaying fetch response data to user
+      class Stats {
+        constructor(
+          temp,
+          humidity,
+          extraStat,
+          image,
+          iconContainer,
+          textContainer
+        ) {
+          this.temp = temp;
+          this.humidity = humidity;
+          this.extraStat = extraStat;
+          this.image = image;
+          this.iconContainer = iconContainer;
+          this.textContainer = textContainer;
+        }
+
+        displayStats() {
+          this.iconContainer.append($('<img>').attr('src', this.image));
+          this.textContainer.append([
+            $('<p>').html(`${this.temp}`),
+            $('<p>').html(`${this.humidity}`),
+            $('<p>').html(`${this.extraStat}`),
+          ]);
+        }
       }
 
+      // Set and display today's weather (oneDayRes)
       const currentDay = new Stats(
         `Temperature: ${oneDayRes.main.temp} &deg;F`,
         `Humidity: ${oneDayRes.main.humidity}%`,
         `Wind Speed: ${oneDayRes.wind.speed} mph`,
-        `https://openweathermap.org/img/wn/${oneDayRes.weather[0].icon}@2x.png`
-      )
+        `https://openweathermap.org/img/wn/${oneDayRes.weather[0].icon}@2x.png`,
+        currentDayIconContainer,
+        currentDayStatsContainer
+      );
 
-      // One Day Weather
-      cityStats.html('');
-      iconContainer.append($('<img>').attr('src', currentDay.image));
-      cityNameEl.append(`<p>${searchedCity}`);
-      tempEl.append(currentDay.temp);
-      humidityEl.append(currentDay.humidity);
-      windSpeedEl.append(currentDay.windSpeed);
-      // Five Day Forecast
-      const fiveDayIcon = fiveDayRes.list[0].weather[0].icon;
-      const fiveDayImg = $('<img>').attr('src', `https://openweathermap.org/img/wn/${fiveDayIcon}@2x.png`);
-      fiveDayStats.append(fiveDayImg);
+      currentDay.displayStats();
+
+      // Extend stats class to better fit data format difference between one day/five day responses
+      // class fiveDayForecastStats extends Stats {
+
+      // }
+
+      // Set and display weather for next five days (fiveDayRes)
+      const { list } = fiveDayRes;
+      console.log(typeof list, list[0].dt_txt);
+      // TODO: 0 needs to become i wherei can select specific index from list
+      const fiveDayArr = [0, 5, 12, 23, 31];
+
+      fiveDayArr.map((i) => {
+        const nextFiveDays = new Stats(
+          `Temperature: ${list[0].main.temp} &deg;F`,
+          `Humidity: ${list[0].main.humidity}%`,
+          `${list[0].weather[0].description}`,
+          `https://openweathermap.org/img/wn/${list[0].weather[0].icon}@2x.png`,
+          fiveDayIconContainer,
+          fiveDayStatsContainer
+        );
+
+        nextFiveDays.displayStats();
+      });
+
+      // const fiveDayIcon = fiveDayRes.list[0].weather[0].icon;
+      // const fiveDayImg = $('<img>').attr(
+      //   'src',
+      //   `https://openweathermap.org/img/wn/${fiveDayIcon}@2x.png`
+      // );
+      // fiveDayStats.append(fiveDayImg);
+
+      //map through fiveDayResults and for results at index i return a Stat constructor
+      // console.log(typeof fiveDayRes);
+      // for (const [key, value] of Object.entries(fiveDayRes.list[0])) {
+      //   console.log(`${key}: ${value}`);
+      // }
     });
   getLastSearch(searchedCity);
 }
