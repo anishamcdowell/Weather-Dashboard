@@ -22,7 +22,7 @@ var uvIndexEl = $('#uv-index');
 // Five day forecast elements
 var fiveDayStats = $('#five-day-forecast');
 var fiveDayIconContainer = $('#five-day-icon-container');
-var fiveDayStatsContainer = $('#five-day-stats');
+var fiveDayTextContainer = $('#five-day-text-container');
 
 //User location elements
 let currentLon;
@@ -138,11 +138,15 @@ function getForecast(searchedCity) {
 
         displayStats() {
           this.iconContainer.append($('<img>').attr('src', this.image));
+          // this.textContainer.html('');
           this.textContainer.append([
             $('<p>').html(`${this.temp}`),
             $('<p>').html(`${this.humidity}`),
             $('<p>').html(`${this.extraStat}`),
           ]);
+          // this.textContainer.replaceWith(
+          //   `<div><p>${this.temp}</p><p>${this.humidity}</p><p>${this.extraStat}</p><img src=${this.image} /></div>`
+          // );
         }
       }
 
@@ -166,17 +170,17 @@ function getForecast(searchedCity) {
       // Set and display weather for next five days (fiveDayRes)
       const { list } = fiveDayRes;
       console.log(typeof list, list[0].dt_txt);
-      // TODO: 0 needs to become i wherei can select specific index from list
+
       const fiveDayArr = [0, 5, 12, 23, 31];
 
       fiveDayArr.map((i) => {
         const nextFiveDays = new Stats(
-          `Temperature: ${list[0].main.temp} &deg;F`,
-          `Humidity: ${list[0].main.humidity}%`,
-          `${list[0].weather[0].description}`,
-          `https://openweathermap.org/img/wn/${list[0].weather[0].icon}@2x.png`,
+          `Temperature: ${list[i].main.temp} &deg;F`,
+          `Humidity: ${list[i].main.humidity}%`,
+          `${list[i].weather[0].description}`,
+          `https://openweathermap.org/img/wn/${list[i].weather[0].icon}@2x.png`,
           fiveDayIconContainer,
-          fiveDayStatsContainer
+          fiveDayTextContainer
         );
 
         nextFiveDays.displayStats();
