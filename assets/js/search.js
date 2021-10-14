@@ -5,9 +5,22 @@ const apiUrl = 'https://api.openweathermap.org/data/2.5';
 const myKey = 'c532a4ca316c5a5b851492ddb2488a5c';
 
 // Search elements
-var searchBox = $('#search-box');
+https: var searchBox = $('#search-box');
 var searchButton = $('#search-btn');
 var searchHxDiv = $('#search-hx');
+
+// Current location elements
+let usersPosition;
+var currentLocationName = $('#location-display');
+let currentLocationIconContainer = $('#current-location-icon-container');
+let currentLocationTextContainer = $('#current-location-text-container');
+var currentLocationWrapper = $('#current-location');
+var cityNameEl = $('#current-city-name');
+var iconContainer = $('#current-city-name-and-icon');
+var tempEl = $('#current-temp');
+var humidityEl = $('#current-humidity');
+var windSpeedEl = $('#current-wind-speed');
+var uvIndexEl = $('#current-uv-index');
 
 // Current day's elements
 var cityStats = $('.stat');
@@ -24,9 +37,30 @@ var fiveDayStats = $('#five-day-forecast');
 var fiveDayIconContainer = $('#five-day-icon-container');
 var fiveDayTextContainer = $('#five-day-text-container');
 
-//User location elements
-let currentLon;
-let currentLat;
+//Constructor for both one day and each five day forecast to use when displaying fetch response data to user
+class Stats {
+  constructor(temp, humidity, extraStat, image, iconContainer, textContainer) {
+    this.temp = temp;
+    this.humidity = humidity;
+    this.extraStat = extraStat;
+    this.image = image;
+    this.iconContainer = iconContainer;
+    this.textContainer = textContainer;
+  }
+
+  displayStats() {
+    this.iconContainer.append($('<img>').attr('src', this.image));
+    // this.textContainer.html('');
+    this.textContainer.append([
+      $('<p>').html(`${this.temp}`),
+      $('<p>').html(`${this.humidity}`),
+      $('<p>').html(`${this.extraStat}`),
+    ]);
+    // this.textContainer.replaceWith(
+    //   `<div><p>${this.temp}</p><p>${this.humidity}</p><p>${this.extraStat}</p><img src=${this.image} /></div>`
+    // );s
+  }
+}
 
 $(window).on('load', (e) => {
   // Display current date/time and search history
@@ -48,6 +82,8 @@ $(window).on('load', (e) => {
     }
   }
   getForecast(localStorage.getItem('lastSearch'));
+  // On load and before and local storage gets anything: indicate location permissions have not been given
+  getUserLocation();
 });
 
 // When user searches for a city...
@@ -105,7 +141,7 @@ function getAndSaveUserSearch(userInput) {
 // ...Fetch forecast for chosen city
 function getForecast(searchedCity) {
   let searchUrl = `${apiUrl}/weather?q=${searchedCity}&units=imperial&appid=${myKey}`;
-  let fiveDaySearchUrl = `${apiUrl}/forecast?q=${searchedCity}&appid=${myKey}`;
+  let fiveDaySearchUrl = `${apiUrl}/forecast?q=${searchedCity}&units=imperial&appid=${myKey}`;
 
   Promise.all([fetch(searchUrl), fetch(fiveDaySearchUrl)])
     .then(async ([res1, res2]) => {
@@ -117,38 +153,6 @@ function getForecast(searchedCity) {
       // Clear the current search results and set to new city
       cityStats.html('');
       cityNameEl.append(`<p>${searchedCity}`);
-
-      //Constructor for both one day and each five day forecast to use when displaying fetch response data to user
-      class Stats {
-        constructor(
-          temp,
-          humidity,
-          extraStat,
-          image,
-          iconContainer,
-          textContainer
-        ) {
-          this.temp = temp;
-          this.humidity = humidity;
-          this.extraStat = extraStat;
-          this.image = image;
-          this.iconContainer = iconContainer;
-          this.textContainer = textContainer;
-        }
-
-        displayStats() {
-          this.iconContainer.append($('<img>').attr('src', this.image));
-          // this.textContainer.html('');
-          this.textContainer.append([
-            $('<p>').html(`${this.temp}`),
-            $('<p>').html(`${this.humidity}`),
-            $('<p>').html(`${this.extraStat}`),
-          ]);
-          // this.textContainer.replaceWith(
-          //   `<div><p>${this.temp}</p><p>${this.humidity}</p><p>${this.extraStat}</p><img src=${this.image} /></div>`
-          // );
-        }
-      }
 
       // Set and display today's weather (oneDayRes)
       const currentDay = new Stats(
@@ -169,7 +173,6 @@ function getForecast(searchedCity) {
 
       // Set and display weather for next five days (fiveDayRes)
       const { list } = fiveDayRes;
-      console.log(typeof list, list[0].dt_txt);
 
       const fiveDayArr = [0, 5, 12, 23, 31];
 
@@ -211,3 +214,40 @@ searchHxDiv.on('click', 'button', (e) => {
 function getLastSearch(cityName) {
   localStorage.setItem('lastSearch', cityName);
 }
+
+function getUserLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    currentLocationWrapper.html(
+      '<div class="no-current-location"><p> Unable to find current location</p><button onclick="getUserLocation()">Try Again</button><img src="../assets/search-img.png" class="search-placeholder-icon"/></div > '
+    );
+  }
+}
+
+const showPosition = (position) => {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  currentUrl = `${apiUrl}/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${myKey}`;
+
+  fetch(currentUrl)
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+      const currentLocation = new Stats(
+        `Temperature: ${data.main.temp} &deg;F`,
+        `Humidity: ${data.main.humidity}%`,
+        `${data.weather[0].description}`,
+        `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+        currentLocationIconContainer,
+        currentLocationTextContainer
+      );
+
+      currentLocation.displayStats();
+    });
+};
+
+function getCurrentLocationWeather() {}
