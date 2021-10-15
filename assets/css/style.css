@@ -1,57 +1,48 @@
 /* ----------------------GRID LAYOUT---------------------- */
 body {
   display: grid;
-  grid-template-areas:
-    'section main main'
-    'nav main main'
-    'nav main main';
-  grid-template-columns: 2.5fr 8fr;
-  grid-template-rows: 4fr 4fr;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 50% 50%;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
-#current-location {
-  grid-column: 1/2;
-  grid-row: 1/2;
+#current-location-section {
+  grid-area: 1 / 1 / 2 / 2;
 }
 
-#search-and-hx {
-  grid-column: 1/2;
-  grid-row: 2/3;
-  display: grid;
-  grid-template-rows: 1fr 2fr;
+#search-and-history-section {
+  grid-area: 2 / 1 / 3 / 2;
 }
 
-#search-results {
-  grid-column: 2/3;
-  grid-row: 1/3;
+#main {
+  grid-area: 1 / 2 / 3 / 5;
 }
 
 /* ----------------------GLOBAL STYLES---------------------- */
 body {
-  /* width: 90vw;
-  height: 100vh; */
-  margin: 2rem 5rem;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
   background: linear-gradient(to bottom, pink, blue);
   background-attachment: fixed;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin: 2rem 5rem;
 }
 
-.wrapper {
-  display: flex;
-  flex-flow: column nowrap;
-  padding: 2rem;
-  margin: 1rem 2rem;
+.glass-bg {
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.5),
     rgba(255, 255, 255, 0.25)
   );
+  padding: 2rem;
+  margin: 1rem 2rem;
   border-radius: 1rem;
 }
 
 .container {
-  border: 1px solid red;
+  text-align: center;
 }
+
 button {
   all: unset;
   text-transform: capitalize;
@@ -61,18 +52,24 @@ button {
   background: black;
   color: white;
   text-align: center;
+  margin: 0.5rem 0;
 }
 
 button:hover {
   background-color: lightseagreen;
-  color: black;
 }
 
-.no-current-location p,
+.pseudo-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 1rem;
+}
+
+/* .no-current-location p,
 button,
 img {
   margin: 0.5rem;
-}
+} */
 
 /* ----------------------CURRENT LOCATION DIV STYLES---------------------- */
 /* .no-current-location {
@@ -90,10 +87,34 @@ img {
   text-transform: capitalize;
 } */
 
-#current-location-section {
-  border: 1px solid yellow;
-  display: flex;
-  flex-flow: row nowrap;
+/* ----------------------SEARCH  & HISTORY DIV STYLES---------------------- */
+#clear-search-history-button {
+  background: rgba(0, 0, 0, 0.5);
+  margin: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+#clear-search-history-button:hover {
+  background: rgba(255, 0, 0, 0.75);
+  color: white;
+}
+
+/* ----------------------MAIN DIV STYLES---------------------- */
+#main > .glass-bg {
+  height: 80.5%;
+}
+
+#city-results {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#city-name {
+  text-transform: capitalize;
+  font-size: 4rem;
+  border: 1px solid red;
+  margin: 0;
+  padding: 0;
 }
 
 /* ----------------------FIVE DAY FORECAST---------------------- */

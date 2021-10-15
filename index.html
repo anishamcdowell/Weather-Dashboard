@@ -14,16 +14,16 @@
   </head>
   <body>
     <!-- CURRENT LOCATION DIV -->
-    <section class="wrapper" id="current-location-section">
-      <p id="location-display">Current Location:</p>
+    <section class="glass-bg container" id="current-location-section">
+      <p id="location-name" class="pseudo-header">Current Location:</p>
       <div id="current-location-icon-container"></div>
-      <div class="stat" id="current-location-text-container"></div>
+      <div id="current-location-text-container"></div>
     </section>
 
     <!-- SEARCH AND HISTORY DIV -->
-    <nav class="wrapper" id="search-and-hx">
-      <div id="search">
-        <h3>Search for a city:</h3>
+    <nav class="glass-bg container" id="search-and-history-section">
+      <div id="container">
+        <h3 class="pseudo-header">Search for a City:</h3>
         <form id="search-form">
           <input
             type="text"
@@ -36,30 +36,38 @@
           </button>
         </form>
       </div>
-      <div id="search-hx" class="storedCities"></div>
+      <div id="history-container">
+        <p class="pseudo-header">Search History:</p>
+        <div id="search-hx" class="storedCities"></div>
+      </div>
+      <button onclick="localStorage.clear()" id="clear-search-history-button">
+        Clear Search History
+      </button>
     </nav>
 
     <!-- SEARCH RESULTS DIV-->
-    <main class="wrapper" id="search-results">
+    <main class="container" id="main">
       <h1 id="date"></h1>
-      <div class="container" id="city-display">
-        <div id="head">
-          <h1 class="stat" id="city-name"></h1>
-          <div class="stat" id="city-name-and-icon"></div>
-        </div>
+      <div class="glass-bg" id="search-results">
+        <div class="container" id="city-display">
+          <div id="city-results">
+            <h1 class="stat" id="city-name"></h1>
+            <div class="stat" id="city-name-and-icon"></div>
 
-        <div class="stat" id="current-day-stats">
-          <p class="stat" id="temp"></p>
-          <p class="stat" id="humidity"></p>
-          <p class="stat" id="wind-speed"></p>
-          <!-- <li class="stat" id="uv-index">UV Index:</li> -->
+            <div class="stat" id="current-day-stats">
+              <p class="stat" id="temp"></p>
+              <p class="stat" id="humidity"></p>
+              <p class="stat" id="wind-speed"></p>
+              <!-- <li class="stat" id="uv-index">UV Index:</li> -->
+            </div>
+          </div>
         </div>
-      </div>
-      <div id="five-day-forecast">
-        <h1>5-Day Forecast</h1>
-        <div class="container" id="five-day-stats">
-          <div class="stat" id="five-day-icon-container"></div>
-          <div class="stat" id="five-day-text-container"></div>
+        <div id="five-day-forecast">
+          <h1>5-Day Forecast</h1>
+          <div class="container" id="five-day-stats">
+            <div class="stat" id="five-day-icon-container"></div>
+            <div class="stat" id="five-day-text-container"></div>
+          </div>
         </div>
       </div>
     </main>

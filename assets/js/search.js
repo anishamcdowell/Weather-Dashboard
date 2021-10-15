@@ -11,7 +11,7 @@ var searchHxDiv = $('#search-hx');
 
 // Current location elements
 let usersPosition;
-var currentLocationName = $('#location-display');
+var currentLocationName = $('#location-name');
 let currentLocationIconContainer = $('#current-location-icon-container');
 let currentLocationTextContainer = $('#current-location-text-container');
 var currentLocationWrapper = $('#current-location');
@@ -108,13 +108,13 @@ function getAndSaveUserSearch(userInput) {
   if (userInput == '') {
     alert('No city specified');
   } else {
-    if (storageLength < 7 && displayLength < 7) {
+    if (storageLength < 10 && displayLength < 10) {
       if (
         userInput !== whatsInStorage &&
         !searchHxDiv.hasClass(`${userInput}`)
       ) {
         setData(userInput);
-      } else if (storageLength > 7 && displayLength > 7) {
+      } else if (storageLength > 10 && displayLength > 10) {
         clearData();
       } else {
         return;
