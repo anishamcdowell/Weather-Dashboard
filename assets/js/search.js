@@ -57,13 +57,10 @@ class Stats {
       $('<p>').html(`${this.humidity}`),
       $('<p>').html(`${this.extraStat}`),
     ]);
-    // this.textContainer.replaceWith(
-    //   `<div><p>${this.temp}</p><p>${this.humidity}</p><p>${this.extraStat}</p><img src=${this.image} /></div>`
-    // );s
   }
 
   dynamicDisplay() {
-    $(fiveDayStats).html()
+    $(fiveDayStats).html();
   }
 }
 
@@ -171,11 +168,6 @@ function getForecast(searchedCity) {
 
       currentDay.displayStats();
 
-      // Extend stats class to better fit data format difference between one day/five day responses
-      // class fiveDayForecastStats extends Stats {
-
-      // }
-
       // Set and display weather for next five days (fiveDayRes)
       const { list } = fiveDayRes;
 
@@ -185,7 +177,7 @@ function getForecast(searchedCity) {
         const nextFiveDays = new Stats(
           `Temperature: ${list[i].main.temp} &deg;F`,
           `Humidity: ${list[i].main.humidity}%`,
-          `${list[i].weather[0].description}`,
+          capitalizeString(list[i].weather[0].description),
           `https://openweathermap.org/img/wn/${list[i].weather[0].icon}@2x.png`,
           fiveDayIconContainer,
           fiveDayTextContainer
@@ -193,19 +185,6 @@ function getForecast(searchedCity) {
         nextFiveDays.displayStats();
         fiveDayContainer.append(nextFiveDays);
       });
-
-      // const fiveDayIcon = fiveDayRes.list[0].weather[0].icon;
-      // const fiveDayImg = $('<img>').attr(
-      //   'src',
-      //   `https://openweathermap.org/img/wn/${fiveDayIcon}@2x.png`
-      // );
-      // fiveDayStats.append(fiveDayImg);
-
-      //map through fiveDayResults and for results at index i return a Stat constructor
-      // console.log(typeof fiveDayRes);
-      // for (const [key, value] of Object.entries(fiveDayRes.list[0])) {
-      //   console.log(`${key}: ${value}`);
-      // }
     });
   getLastSearch(searchedCity);
 }
@@ -245,14 +224,19 @@ const showPosition = (position) => {
       const currentLocation = new Stats(
         `Temperature: ${data.main.temp} &deg;F`,
         `Humidity: ${data.main.humidity}%`,
-        `${data.weather[0].description}`,
+        capitalizeString(data.weather[0].description),
         `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
         currentLocationIconContainer,
         currentLocationTextContainer
       );
 
       currentLocation.displayStats();
+      currentLocationName.html(`Current Location: ${data.name}`);
     });
 };
 
-function getCurrentLocationWeather() {}
+function capitalizeString(string) {
+  const capitalizedString =
+    `${string.charAt(0).toUpperCase()}` + string.slice(1);
+  return capitalizedString;
+}
