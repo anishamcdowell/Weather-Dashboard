@@ -36,6 +36,7 @@ var uvIndexEl = $('#uv-index');
 var fiveDayStats = $('#five-day-forecast');
 var fiveDayIconContainer = $('#five-day-icon-container');
 var fiveDayTextContainer = $('#five-day-text-container');
+var fiveDayContainer = $('#five-day-container');
 
 //Constructor for both one day and each five day forecast to use when displaying fetch response data to user
 class Stats {
@@ -59,6 +60,10 @@ class Stats {
     // this.textContainer.replaceWith(
     //   `<div><p>${this.temp}</p><p>${this.humidity}</p><p>${this.extraStat}</p><img src=${this.image} /></div>`
     // );s
+  }
+
+  dynamicDisplay() {
+    $(fiveDayStats).html()
   }
 }
 
@@ -185,8 +190,8 @@ function getForecast(searchedCity) {
           fiveDayIconContainer,
           fiveDayTextContainer
         );
-
         nextFiveDays.displayStats();
+        fiveDayContainer.append(nextFiveDays);
       });
 
       // const fiveDayIcon = fiveDayRes.list[0].weather[0].icon;
