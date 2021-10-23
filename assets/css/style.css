@@ -71,6 +71,14 @@ img {
   margin: 0.5rem;
 } */
 
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
 /* ----------------------CURRENT LOCATION DIV STYLES---------------------- */
 /* .no-current-location {
   display: flex;
@@ -86,6 +94,10 @@ img {
 #city-name {
   text-transform: capitalize;
 } */
+
+.permission-denied > img {
+  width: 50%;
+}
 
 /* ----------------------SEARCH  & HISTORY DIV STYLES---------------------- */
 #clear-search-history-button {
@@ -115,6 +127,11 @@ img {
   border: 1px solid red;
   margin: 0;
   padding: 0;
+}
+
+.weather-icon {
+  border: 1px lime solid;
+  width: 150px;
 }
 
 /* ----------------------FIVE DAY FORECAST---------------------- */

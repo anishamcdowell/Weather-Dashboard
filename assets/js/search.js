@@ -14,7 +14,7 @@ let usersPosition;
 var currentLocationName = $('#location-name');
 let currentLocationIconContainer = $('#current-location-icon-container');
 let currentLocationTextContainer = $('#current-location-text-container');
-var currentLocationWrapper = $('#current-location');
+var currentLocationWrapper = $('#current-location-section');
 var cityNameEl = $('#current-city-name');
 var iconContainer = $('#current-city-name-and-icon');
 var tempEl = $('#current-temp');
@@ -50,7 +50,12 @@ class Stats {
   }
 
   displayStats() {
-    this.iconContainer.append($('<img>').attr('src', this.image));
+    this.iconContainer.append(
+      $('<img>').attr({
+        src: this.image,
+        class: 'weather-icon',
+      })
+    );
     // this.textContainer.html('');
     this.textContainer.append([
       $('<p>').html(`${this.temp}`),
@@ -83,9 +88,9 @@ $(window).on('load', (e) => {
       );
     }
   }
+  getUserLocation();
   getForecast(localStorage.getItem('lastSearch'));
   // On load and before and local storage gets anything: indicate location permissions have not been given
-  getUserLocation();
 });
 
 // When user searches for a city...
@@ -201,18 +206,28 @@ function getLastSearch(cityName) {
 
 function getUserLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else {
-    currentLocationWrapper.html(
-      '<div class="no-current-location"><p> Unable to find current location</p><button onclick="getUserLocation()">Try Again</button><img src="../assets/search-img.png" class="search-placeholder-icon"/></div > '
-    );
-  }
+    navigator.geolocation.getCurrentPosition(checkPermission);
+  } else console.log('error');
 }
+
+const checkPermission = (position) => {
+  var permissionDeniedResponse = $('.permission-denied');
+
+  navigator.permissions
+    .query({ name: 'geolocation' })
+    .then((permissionStatus) => {
+      if (permissionStatus.state === 'granted') {
+        permissionDeniedResponse.toggleClass('hide');
+        showPosition(position);
+      } else {
+        permissionDeniedResponse.toggleClass('hide');
+      }
+    });
+};
 
 const showPosition = (position) => {
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
-
   currentUrl = `${apiUrl}/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${myKey}`;
 
   fetch(currentUrl)
