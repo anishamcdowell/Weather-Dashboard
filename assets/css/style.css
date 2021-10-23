@@ -80,23 +80,16 @@ img {
 }
 
 /* ----------------------CURRENT LOCATION DIV STYLES---------------------- */
-/* .no-current-location {
+#current-location-section {
   display: flex;
   flex-flow: column wrap;
+  justify-content: center;
   align-items: center;
 }
 
-.search-placeholder-icon {
-  width: 5rem;
-  height: auto;
-}
-
-#city-name {
-  text-transform: capitalize;
-} */
-
 .permission-denied > img {
   width: 50%;
+  margin: 2rem;
 }
 
 /* ----------------------SEARCH  & HISTORY DIV STYLES---------------------- */
@@ -187,5 +180,8 @@ img {
   body {
     display: flex;
     flex-flow: column wrap;
+  }
+  .permission-denied > img {
+    width: 25%;
   }
 }

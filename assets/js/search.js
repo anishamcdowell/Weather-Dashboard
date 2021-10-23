@@ -211,7 +211,8 @@ function getUserLocation() {
 }
 
 const checkPermission = (position) => {
-  var permissionDeniedResponse = $('.permission-denied');
+  const permissionDeniedResponse = $('.permission-denied');
+  const permissionGrantedResponse = $('.permission-granted');
 
   navigator.permissions
     .query({ name: 'geolocation' })
@@ -220,7 +221,8 @@ const checkPermission = (position) => {
         permissionDeniedResponse.toggleClass('hide');
         showPosition(position);
       } else {
-        permissionDeniedResponse.toggleClass('hide');
+        permissionGrantedResponse.toggleClass('hide');
+        console.log('hit');
       }
     });
 };
