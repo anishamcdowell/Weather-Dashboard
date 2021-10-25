@@ -207,7 +207,10 @@ function getLastSearch(cityName) {
 function getUserLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(checkPermission);
-  } else console.log('error');
+    console.log('find location hit');
+  } else {
+    console.log('error');
+  }
 }
 
 const checkPermission = (position) => {
