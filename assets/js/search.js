@@ -31,6 +31,7 @@ var tempEl = $('#temp');
 var humidityEl = $('#humidity');
 var windSpeedEl = $('#wind-speed');
 var uvIndexEl = $('#uv-index');
+var searchResultsContainer = $('#search-results');
 
 // Five day forecast elements
 var fiveDayStats = $('#five-day-forecast');
@@ -70,11 +71,13 @@ class Stats {
 }
 
 $(window).on('load', (e) => {
-  // Display current date/time and search history
   $('#date').append(currentDate);
+
+  getUserLocation();
+
   // Display search hx as buttons
   for (city in localStorage) {
-    if (
+    if ( // Do not show these elements that are in local storage as part of the search history
       city !== 'length' &&
       city !== 'clear' &&
       city !== 'getItem' &&
@@ -87,10 +90,14 @@ $(window).on('load', (e) => {
         `<button class="searched-city" id=${city}>${city}</button>`
       );
     }
+    
+    // If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
+    if (localStorage.getItem('lastSearch') === 'null') {
+      searchResultsContainer.html('<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>');
+    } else {
+      getForecast(localStorage.getItem('lastSearch'));
+    }  
   }
-  getUserLocation();
-  getForecast(localStorage.getItem('lastSearch'));
-  // On load and before and local storage gets anything: indicate location permissions have not been given
 });
 
 // When user searches for a city...

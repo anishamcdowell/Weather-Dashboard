@@ -34,9 +34,9 @@ body {
     rgba(255, 255, 255, 0.5),
     rgba(255, 255, 255, 0.25)
   );
-  padding: 2rem;
-  margin: 1rem 2rem;
+  padding: 1rem;
   border-radius: 1rem;
+  margin: 1rem;
 }
 
 .container {
@@ -125,6 +125,16 @@ img {
 .weather-icon {
   border: 1px lime solid;
   width: 150px;
+}
+
+.null-history-message {
+  text-transform: uppercase;
+  color: red;
+}
+
+.null-history-message > img {
+  width: 25%;
+  padding: 2rem;
 }
 
 /* ----------------------FIVE DAY FORECAST---------------------- */
