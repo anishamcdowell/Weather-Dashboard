@@ -9,7 +9,6 @@ body {
 
 #header {
   grid-area: 1 / 2 / 2 / 5;
-  text-align: center;
 }
 
 #current-location-section {
@@ -70,18 +69,17 @@ button:hover {
   margin: 1rem;
 }
 
-/* .no-current-location p,
-button,
-img {
-  margin: 0.5rem;
-} */
-
 .hide {
   display: none;
 }
 
 .show {
   display: block;
+}
+
+/* ----------------------HEADER---------------------- */
+#header {
+  text-align: center;
 }
 
 /* ----------------------CURRENT LOCATION DIV STYLES---------------------- */
@@ -100,15 +98,13 @@ img {
 
 /* ----------------------SEARCH  & HISTORY DIV STYLES---------------------- */
 #search-and-history-section {
-  position: relative;
-  min-height: 20rem;
 }
 
 #history-container {
-  position: absolute;
 }
 
 #clear-search-history-button {
+  bottom: -1.5rem;
   background: rgba(0, 0, 0, 0.5);
   margin: 1.5rem;
   margin-bottom: 2.5rem;

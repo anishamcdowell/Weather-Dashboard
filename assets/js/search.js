@@ -91,20 +91,28 @@ $(window).on('load', (e) => {
       );
     }
     
-    // If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
-    if (localStorage.getItem('lastSearch') === 'null') {
-      searchResultsContainer.html('<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>');
-    } else {
-      getForecast(localStorage.getItem('lastSearch'));
-    }  
+    ifNullStorage(localStorage.getItem('lastSearch'));
   }
 });
+
+// If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
+function ifNullStorage(storageState) {
+  if (storageState === 'null') {
+    searchResultsContainer.html('<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>');
+  } 
+  getForecast(storageState);
+  
+}
 
 // When user searches for a city...
 searchButton.click((e) => {
   e.preventDefault();
+  // Save user input to local storage
   getAndSaveUserSearch(searchInput());
+  // ifNullStorage(localStorage.getItem('lastSearch'));
+  // API call
   getForecast(searchInput());
+
 });
 
 // ...capture user's input from the search box...
@@ -154,6 +162,7 @@ function getAndSaveUserSearch(userInput) {
 
 // ...Fetch forecast for chosen city
 function getForecast(searchedCity) {
+
   let searchUrl = `${apiUrl}/weather?q=${searchedCity}&units=imperial&appid=${myKey}`;
   let fiveDaySearchUrl = `${apiUrl}/forecast?q=${searchedCity}&units=imperial&appid=${myKey}`;
 
@@ -166,7 +175,7 @@ function getForecast(searchedCity) {
     .then(([oneDayRes, fiveDayRes]) => {
       // Clear the current search results and set to new city
       cityStats.html('');
-      cityNameEl.append(`<p>${searchedCity}`);
+      cityNameEl.append(`<p>${searchedCity}</p>`);
 
       // Set and display today's weather (oneDayRes)
       const currentDay = new Stats(
@@ -178,7 +187,7 @@ function getForecast(searchedCity) {
         currentDayStatsContainer
       );
 
-      currentDay.displayStats();
+      searchResultsContainer.html(currentDay.displayStats());
 
       // Set and display weather for next five days (fiveDayRes)
       const { list } = fiveDayRes;
