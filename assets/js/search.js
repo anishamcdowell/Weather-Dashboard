@@ -77,7 +77,8 @@ $(window).on('load', (e) => {
 
   // Display search hx as buttons
   for (city in localStorage) {
-    if ( // Do not show these elements that are in local storage as part of the search history
+    if (
+      // Do not show these elements that are in local storage as part of the search history
       city !== 'length' &&
       city !== 'clear' &&
       city !== 'getItem' &&
@@ -90,18 +91,19 @@ $(window).on('load', (e) => {
         `<button class="searched-city" id=${city}>${city}</button>`
       );
     }
-    
+
     ifNullStorage(localStorage.getItem('lastSearch'));
   }
 });
 
 // If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
 function ifNullStorage(storageState) {
-  if (storageState === 'null') {
-    searchResultsContainer.html('<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>');
-  } 
+  if (storageState === 'null' || storageState === '') {
+    searchResultsContainer.html(
+      '<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>'
+    );
+  }
   getForecast(storageState);
-  
 }
 
 // When user searches for a city...
@@ -112,7 +114,6 @@ searchButton.click((e) => {
   // ifNullStorage(localStorage.getItem('lastSearch'));
   // API call
   getForecast(searchInput());
-
 });
 
 // ...capture user's input from the search box...
@@ -156,13 +157,14 @@ function getAndSaveUserSearch(userInput) {
   // Remove data from local storage and from search history display
   function clearData() {
     localStorage.clear();
-    searchHxDiv.empty();
+    // searchHxDiv.empty();
+    // localStorage.clear();
+    searchHxDiv.load('index.html');
   }
 }
 
 // ...Fetch forecast for chosen city
 function getForecast(searchedCity) {
-
   let searchUrl = `${apiUrl}/weather?q=${searchedCity}&units=imperial&appid=${myKey}`;
   let fiveDaySearchUrl = `${apiUrl}/forecast?q=${searchedCity}&units=imperial&appid=${myKey}`;
 
@@ -173,7 +175,6 @@ function getForecast(searchedCity) {
       return [oneDayRes, fiveDayRes];
     })
     .then(([oneDayRes, fiveDayRes]) => {
-      // Clear the current search results and set to new city
       cityStats.html('');
       cityNameEl.append(`<p>${searchedCity}</p>`);
 
@@ -207,6 +208,7 @@ function getForecast(searchedCity) {
         fiveDayContainer.append(nextFiveDays);
       });
     });
+  // searchResultsContainer.load('index.html');
   getLastSearch(searchedCity);
 }
 
@@ -223,7 +225,6 @@ function getLastSearch(cityName) {
 function getUserLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(checkPermission);
-    console.log('find location hit');
   } else {
     console.log('error');
   }
