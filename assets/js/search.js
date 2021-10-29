@@ -5,36 +5,19 @@ const apiUrl = 'https://api.openweathermap.org/data/2.5';
 const myKey = 'c532a4ca316c5a5b851492ddb2488a5c';
 
 // Search elements
-https: var searchBox = $('#search-box');
-var searchButton = $('#search-btn');
 var searchHxDiv = $('#search-hx');
 
 // Current location elements
-let usersPosition;
-var currentLocationName = $('#location-name');
-let currentLocationIconContainer = $('#current-location-icon-container');
-let currentLocationTextContainer = $('#current-location-text-container');
-var currentLocationWrapper = $('#current-location-section');
-var cityNameEl = $('#current-city-name');
+var cityName = $('#current-city-name');
 var iconContainer = $('#current-city-name-and-icon');
-var tempEl = $('#current-temp');
-var humidityEl = $('#current-humidity');
-var windSpeedEl = $('#current-wind-speed');
-var uvIndexEl = $('#current-uv-index');
+// TODO: var uvIndexEl = $('#current-uv-index');
 
 // Current day's elements
 var cityStats = $('.stat');
-var cityNameEl = $('#city-name');
-var currentDayIconContainer = $('#city-name-and-icon');
-var currentDayStatsContainer = $('#current-day-stats');
-var tempEl = $('#temp');
-var humidityEl = $('#humidity');
-var windSpeedEl = $('#wind-speed');
-var uvIndexEl = $('#uv-index');
+var cityName = $('#city-name');
 var searchResultsContainer = $('#search-results');
 
 // Five day forecast elements
-var fiveDayStats = $('#five-day-forecast');
 var fiveDayIconContainer = $('#five-day-icon-container');
 var fiveDayTextContainer = $('#five-day-text-container');
 var fiveDayContainer = $('#five-day-container');
@@ -66,7 +49,7 @@ class Stats {
   }
 
   dynamicDisplay() {
-    $(fiveDayStats).html();
+    $('#five-day-forecast').html();
   }
 }
 
@@ -92,22 +75,12 @@ $(window).on('load', (e) => {
       );
     }
 
-    ifNullStorage(localStorage.getItem('lastSearch'));
+    fetchWeather(localStorage.getItem('lastSearch'));
   }
 });
 
-// If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
-function ifNullStorage(storageState) {
-  if (storageState === 'null' || storageState === '') {
-    searchResultsContainer.html(
-      '<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>'
-    );
-  }
-  getForecast(storageState);
-}
-
 // When user searches for a city...
-searchButton.click((e) => {
+$('#search-btn').click((e) => {
   e.preventDefault();
   // Save user input to local storage
   getAndSaveUserSearch(searchInput());
@@ -118,7 +91,7 @@ searchButton.click((e) => {
 
 // ...capture user's input from the search box...
 function searchInput() {
-  let searchedCity = searchBox.val();
+  let searchedCity = $('#search-box').val();
   return searchedCity.toLowerCase();
 }
 
@@ -150,21 +123,52 @@ function getAndSaveUserSearch(userInput) {
 
   // Set data in local storage and as an HTML element
   function setData(userInput) {
+    console.log('data set');
     localStorage.setItem(userInput, JSON.stringify(userInput));
     searchHxDiv.prepend(`<button class="${userInput}">${userInput}</button>`);
   }
 
   // Remove data from local storage and from search history display
   function clearData() {
-    localStorage.clear();
-    // searchHxDiv.empty();
     // localStorage.clear();
-    searchHxDiv.load('index.html');
+    console.log('wtf');
   }
 }
 
 // ...Fetch forecast for chosen city
 function getForecast(searchedCity) {
+  if (
+    localStorage.getItem('lastSearch') === 'null' ||
+    localStorage.getItem('lastSearch') === '' ||
+    localStorage.length === 0
+  ) {
+    searchResultsContainer.html(
+      '<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>'
+    );
+    fetchWeather(searchedCity);
+    getLastSearch(searchedCity);
+    location.reload;
+  } else {
+    fetchWeather(searchedCity);
+    getLastSearch(searchedCity);
+  }
+
+  getLastSearch(searchedCity);
+}
+
+// If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
+// function nullStorage(storageState) {
+//   if (
+//     storageState === 'null' ||
+//     storageState === '' ||
+//   ) {
+
+//   }
+
+//   // fetchWeather(storageState);
+// }
+
+function fetchWeather(searchedCity) {
   let searchUrl = `${apiUrl}/weather?q=${searchedCity}&units=imperial&appid=${myKey}`;
   let fiveDaySearchUrl = `${apiUrl}/forecast?q=${searchedCity}&units=imperial&appid=${myKey}`;
 
@@ -176,7 +180,7 @@ function getForecast(searchedCity) {
     })
     .then(([oneDayRes, fiveDayRes]) => {
       cityStats.html('');
-      cityNameEl.append(`<p>${searchedCity}</p>`);
+      cityName.append(`<p>${searchedCity}</p>`);
 
       // Set and display today's weather (oneDayRes)
       const currentDay = new Stats(
@@ -184,8 +188,8 @@ function getForecast(searchedCity) {
         `Humidity: ${oneDayRes.main.humidity}%`,
         `Wind Speed: ${oneDayRes.wind.speed} mph`,
         `https://openweathermap.org/img/wn/${oneDayRes.weather[0].icon}@2x.png`,
-        currentDayIconContainer,
-        currentDayStatsContainer
+        $('#city-name-and-icon'),
+        $('#current-day-stats')
       );
 
       searchResultsContainer.html(currentDay.displayStats());
@@ -208,8 +212,6 @@ function getForecast(searchedCity) {
         fiveDayContainer.append(nextFiveDays);
       });
     });
-  // searchResultsContainer.load('index.html');
-  getLastSearch(searchedCity);
 }
 
 //When user selects search history button
@@ -263,12 +265,12 @@ const showPosition = (position) => {
         `Humidity: ${data.main.humidity}%`,
         capitalizeString(data.weather[0].description),
         `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-        currentLocationIconContainer,
-        currentLocationTextContainer
+        $('#current-location-icon-container'),
+        $('#current-location-text-container')
       );
 
       currentLocation.displayStats();
-      currentLocationName.html(`Current Location: ${data.name}`);
+      $('#location-name').html(`Current Location: ${data.name}`);
     });
 };
 
