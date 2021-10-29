@@ -1,28 +1,24 @@
+// ++++++++++++++++++++ GLOBAL VARIABLES ++++++++++++++++++++
 var currentDate = moment().format('dddd, MMM Do, YYYY');
-
 // API elements
 const apiUrl = 'https://api.openweathermap.org/data/2.5';
 const myKey = 'c532a4ca316c5a5b851492ddb2488a5c';
-
 // Search elements
 var searchHxDiv = $('#search-hx');
-
 // Current location elements
 var cityName = $('#current-city-name');
 var iconContainer = $('#current-city-name-and-icon');
 // TODO: var uvIndexEl = $('#current-uv-index');
-
 // Current day's elements
 var cityStats = $('.stat');
 var cityName = $('#city-name');
 var searchResultsContainer = $('#search-results');
-
 // Five day forecast elements
 var fiveDayIconContainer = $('#five-day-icon-container');
 var fiveDayTextContainer = $('#five-day-text-container');
 var fiveDayContainer = $('#five-day-container');
 
-//Constructor for both one day and each five day forecast to use when displaying fetch response data to user
+// ++++++++++++++++++++ FORECAST CONSTRUCTOR ++++++++++++++++++++
 class Stats {
   constructor(temp, humidity, extraStat, image, iconContainer, textContainer) {
     this.temp = temp;
@@ -40,24 +36,18 @@ class Stats {
         class: 'weather-icon',
       })
     );
-    // this.textContainer.html('');
     this.textContainer.append([
       $('<p>').html(`${this.temp}`),
       $('<p>').html(`${this.humidity}`),
       $('<p>').html(`${this.extraStat}`),
     ]);
   }
-
-  dynamicDisplay() {
-    $('#five-day-forecast').html();
-  }
 }
 
+// ++++++++++++++++++++ BEGIN APP ++++++++++++++++++++
 $(window).on('load', (e) => {
   $('#date').append(currentDate);
-
   getUserLocation();
-
   // Display search hx as buttons
   for (city in localStorage) {
     if (
@@ -70,12 +60,12 @@ $(window).on('load', (e) => {
       city !== 'setItem' &&
       city !== 'lastSearch'
     ) {
+      // Whatever cities are in local storage, display as a search history btn
       searchHxDiv.append(
         `<button class="searched-city" id=${city}>${city}</button>`
       );
     }
-
-    fetchWeather(localStorage.getItem('lastSearch'));
+    getForecast(localStorage.getItem('lastSearch'));
   }
 });
 
@@ -97,76 +87,43 @@ function searchInput() {
 
 // ...save user input to localStorage and display in search history
 function getAndSaveUserSearch(userInput) {
-  let storageLength = localStorage.length;
-  let displayLength = searchHxDiv.children().length;
   let whatsInStorage = JSON.parse(localStorage.getItem(userInput));
-
   if (userInput == '') {
     alert('No city specified');
   } else {
-    if (storageLength < 10 && displayLength < 10) {
-      if (
-        userInput !== whatsInStorage &&
-        !searchHxDiv.hasClass(`${userInput}`)
-      ) {
-        setData(userInput);
-      } else if (storageLength > 10 && displayLength > 10) {
-        clearData();
-      } else {
-        return;
-      }
+    if (userInput !== whatsInStorage && !searchHxDiv.hasClass(`${userInput}`)) {
+      localStorage.setItem(userInput, JSON.stringify(userInput));
+      searchHxDiv.prepend(`<button class="${userInput}">${userInput}</button>`);
     } else {
-      clearData();
-      setData(userInput);
+      return;
     }
-  }
-
-  // Set data in local storage and as an HTML element
-  function setData(userInput) {
-    console.log('data set');
-    localStorage.setItem(userInput, JSON.stringify(userInput));
-    searchHxDiv.prepend(`<button class="${userInput}">${userInput}</button>`);
-  }
-
-  // Remove data from local storage and from search history display
-  function clearData() {
-    // localStorage.clear();
-    console.log('wtf');
   }
 }
 
 // ...Fetch forecast for chosen city
 function getForecast(searchedCity) {
+  // If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
   if (
     localStorage.getItem('lastSearch') === 'null' ||
     localStorage.getItem('lastSearch') === '' ||
     localStorage.length === 0
   ) {
+    console.log('empty storage');
     searchResultsContainer.html(
       '<div class="null-history-message"><img src="./assets/search-img.png" /><p class="pseudo-header">Please search for a city</p></div>'
     );
+    // ============================need to test in fetchWeather=============================
     fetchWeather(searchedCity);
     getLastSearch(searchedCity);
-    location.reload;
+    return;
   } else {
     fetchWeather(searchedCity);
     getLastSearch(searchedCity);
   }
-
   getLastSearch(searchedCity);
+
+  // =========================================================
 }
-
-// If there is no recent search history display a message telling user to search one; if there is a search history display the most recent
-// function nullStorage(storageState) {
-//   if (
-//     storageState === 'null' ||
-//     storageState === '' ||
-//   ) {
-
-//   }
-
-//   // fetchWeather(storageState);
-// }
 
 function fetchWeather(searchedCity) {
   let searchUrl = `${apiUrl}/weather?q=${searchedCity}&units=imperial&appid=${myKey}`;
@@ -181,7 +138,6 @@ function fetchWeather(searchedCity) {
     .then(([oneDayRes, fiveDayRes]) => {
       cityStats.html('');
       cityName.append(`<p>${searchedCity}</p>`);
-
       // Set and display today's weather (oneDayRes)
       const currentDay = new Stats(
         `Temperature: ${oneDayRes.main.temp} &deg;F`,
@@ -191,14 +147,10 @@ function fetchWeather(searchedCity) {
         $('#city-name-and-icon'),
         $('#current-day-stats')
       );
-
       searchResultsContainer.html(currentDay.displayStats());
-
       // Set and display weather for next five days (fiveDayRes)
       const { list } = fiveDayRes;
-
       const fiveDayArr = [0, 5, 12, 23, 31];
-
       fiveDayArr.map((i) => {
         const nextFiveDays = new Stats(
           `Temperature: ${list[i].main.temp} &deg;F`,
