@@ -97,12 +97,6 @@ button:hover {
 }
 
 /* ----------------------SEARCH  & HISTORY DIV STYLES---------------------- */
-#search-and-history-section {
-}
-
-#history-container {
-}
-
 #clear-search-history-button {
   bottom: -1.5rem;
   background: rgba(0, 0, 0, 0.5);
@@ -136,6 +130,7 @@ button:hover {
 .weather-icon {
   border: 1px lime solid;
   width: 150px;
+  margin: 0 auto;
 }
 
 .null-history-message {
@@ -155,16 +150,13 @@ button:hover {
 
 #five-day-icon-container,
 #five-day-text-container {
+}
+
+.one-day-container {
+  border: 1px solid blue;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  justify-content: center;
+  grid-template-columns: repeat(5, 20%);
 }
-
-#five-day-container {
-  border: 1px solid red;
-}
-
-/* SMALL DESKTOP */
 
 /* TABLET */
 @media only screen and (max-width: 1007px) {
@@ -177,7 +169,7 @@ button:hover {
   }
 
   #header {
-    grid-area: 1 / 1 / 2 / 3; 
+    grid-area: 1 / 1 / 2 / 3;
   }
 
   #current-location-section {

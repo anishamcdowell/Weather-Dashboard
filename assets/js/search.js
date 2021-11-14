@@ -25,22 +25,15 @@ class Stats {
     this.humidity = humidity;
     this.extraStat = extraStat;
     this.image = image;
-    this.iconContainer = iconContainer;
-    this.textContainer = textContainer;
+    this.container = iconContainer;
   }
 
   displayStats() {
-    this.iconContainer.append(
-      $('<img>').attr({
-        src: this.image,
-        class: 'weather-icon',
-      })
+    this.container.append(
+      $(
+        `<div><img src=${this.image} class='weather-icon' /><p>${this.temp}</p><p>${this.humidity}</p><p>${this.extraStat}</p></div>`
+      )
     );
-    this.textContainer.append([
-      $('<p>').html(`${this.temp}`),
-      $('<p>').html(`${this.humidity}`),
-      $('<p>').html(`${this.extraStat}`),
-    ]);
   }
 }
 
@@ -157,8 +150,8 @@ function fetchWeather(searchedCity) {
           `Humidity: ${list[i].main.humidity}%`,
           capitalizeString(list[i].weather[0].description),
           `https://openweathermap.org/img/wn/${list[i].weather[0].icon}@2x.png`,
-          fiveDayIconContainer,
-          fiveDayTextContainer
+          $('.one-day-container'),
+          $('.one-day-container')
         );
         nextFiveDays.displayStats();
         fiveDayContainer.append(nextFiveDays);
